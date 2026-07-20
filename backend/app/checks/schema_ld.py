@@ -7,7 +7,7 @@ from app.audit_context import AuditContext
 from app.models import CheckResult
 
 if TYPE_CHECKING:
-    from app.qa2_evidence import QA2EvidenceBundle
+    from app.fetch_evidence import FetchEvidence
 
 _REQUIRED_FIELDS: dict[str, list[str]] = {
     "Organization": ["name", "url"],
@@ -308,7 +308,7 @@ def _maybe_annotate_speakable(
 def _with_extraction_context(
     result: CheckResult,
     include_ecommerce: bool,
-    qa2_evidence: "QA2EvidenceBundle | None",
+    qa2_evidence: "FetchEvidence | None",
 ) -> CheckResult:
     if qa2_evidence is None:
         return result
@@ -349,7 +349,7 @@ def _with_extraction_context(
 async def check_schema_ld(
     context: AuditContext,
     include_ecommerce: bool = False,
-    qa2_evidence: "QA2EvidenceBundle | None" = None,
+    qa2_evidence: "FetchEvidence | None" = None,
 ) -> CheckResult:
     """Extract and validate JSON-LD structured data from the homepage."""
     if not context.homepage.ok:

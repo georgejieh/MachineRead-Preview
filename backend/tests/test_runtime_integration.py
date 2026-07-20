@@ -17,7 +17,7 @@ from app.checks.search_discovery import (
     check_search_discovery,
 )
 from app.checks.ssr import check_ssr
-from app.qa2_evidence import collect_qa2_evidence
+from app.fetch_evidence import collect_fetch_evidence
 from app.rubric import ESSENTIALS_CHECKED_MAX, ESSENTIALS_CHECK_GROUP_COUNT
 from backend.tests.fixtures import make_audit_context, make_fetch_result
 
@@ -47,7 +47,7 @@ def _page(title: str, path: str) -> str:
     """
 
 
-class QA2RuntimeIntegrationTests(unittest.IsolatedAsyncioTestCase):
+class RuntimeIntegrationTests(unittest.IsolatedAsyncioTestCase):
     def setUp(self) -> None:
         sitemap = """
         <urlset>
@@ -111,10 +111,10 @@ class QA2RuntimeIntegrationTests(unittest.IsolatedAsyncioTestCase):
 
     async def _bundle(self, include_ecommerce: bool = False):
         with (
-            patch("app.qa2_evidence.fetch_url", new=self._fetch),
+            patch("app.fetch_evidence.fetch_url", new=self._fetch),
             patch("app.checks.sitemap_analysis.fetch_url", new=self._fetch),
         ):
-            return await collect_qa2_evidence(self.context, include_ecommerce)
+            return await collect_fetch_evidence(self.context, include_ecommerce)
 
     async def test_bundle_reuses_root_sitemap_homepage_and_sample_fetches(self) -> None:
         bundle = await self._bundle()
@@ -183,10 +183,10 @@ class QA2RuntimeIntegrationTests(unittest.IsolatedAsyncioTestCase):
             self.fail(f"unexpected fetch: {url}")
 
         with (
-            patch("app.qa2_evidence.fetch_url", new=redirect_fetch),
+            patch("app.fetch_evidence.fetch_url", new=redirect_fetch),
             patch("app.checks.sitemap_analysis.fetch_url", new=redirect_fetch),
         ):
-            bundle = await collect_qa2_evidence(self.context)
+            bundle = await collect_fetch_evidence(self.context)
 
         requested_urls = [url for url, _ in self.calls]
         self.assertNotIn(candidate_url, requested_urls)

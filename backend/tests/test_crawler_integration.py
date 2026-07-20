@@ -20,7 +20,7 @@ from app.fetching import BROWSER_USER_AGENT, FetchResult
 from backend.tests.fixtures import make_audit_context
 
 
-class QA2CrawlerRegistryTests(unittest.TestCase):
+class CrawlerRegistryTests(unittest.TestCase):
     def test_duckduckgo_crawlers_are_active_in_all_three_consumers(self) -> None:
         crawlers = {crawler.name: crawler for crawler in CRAWLERS}
         scored_names = {crawler.name for crawler in robots_scoring_crawlers()}
@@ -85,7 +85,7 @@ class QA2CrawlerRegistryTests(unittest.TestCase):
         self.assertIn("real-time retrieval for AI-assisted answers", directive_caveats)
 
 
-class QA2CrawlerBehaviorTests(unittest.IsolatedAsyncioTestCase):
+class CrawlerBehaviorTests(unittest.IsolatedAsyncioTestCase):
     async def test_robots_scores_duckassist_policy_with_purpose_caveat(self) -> None:
         robots_text = (
             "User-agent: *\nAllow: /\n"

@@ -27,7 +27,7 @@ _SAMPLE_PAGE_LIMIT = 5
 
 
 @dataclass(frozen=True)
-class QA2EvidenceBundle:
+class FetchEvidence:
     sitemap_sample: SitemapSampleResult
     sitemap_score_evidence: tuple[bool, int, bool, bool, bool]
     sitemap_responses: tuple[FetchResult, ...]
@@ -232,10 +232,10 @@ def _sitemap_score_evidence(
     return (*best, has_robot_reference)
 
 
-async def collect_qa2_evidence(
+async def collect_fetch_evidence(
     context: AuditContext,
     include_ecommerce: bool = False,
-) -> QA2EvidenceBundle:
+) -> FetchEvidence:
     sitemap_collection, llms_response, markdown_evidence = await asyncio.gather(
         collect_sitemap_evidence(context),
         fetch_url(make_root_url(context.url, "/llms.txt")),
@@ -276,7 +276,7 @@ async def collect_qa2_evidence(
             include_ecommerce=include_ecommerce,
         )
     )
-    return QA2EvidenceBundle(
+    return FetchEvidence(
         sitemap_sample=sitemap_collection.sample,
         sitemap_score_evidence=_sitemap_score_evidence(
             scoring_sitemap_responses,

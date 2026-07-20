@@ -19,7 +19,7 @@ from app.fetching import FetchResult, fetch_url, make_root_url
 from app.models import CheckResult
 
 if TYPE_CHECKING:
-    from app.qa2_evidence import QA2EvidenceBundle
+    from app.fetch_evidence import FetchEvidence
 
 _SEARCH_BOTS = ["Googlebot", "Bingbot"]
 _COMMON_FEED_PATHS = ("/feed.xml", "/rss.xml", "/atom.xml", "/feed.json")
@@ -964,7 +964,7 @@ async def _freshness_surface(context: AuditContext) -> FeedFreshnessResult:
 async def check_search_discovery(
     context: AuditContext,
     include_ecommerce: bool = False,
-    qa2_evidence: "QA2EvidenceBundle | None" = None,
+    qa2_evidence: "FetchEvidence | None" = None,
 ) -> CheckResult:
     """Check included cross-engine discovery hints for Google, Bing, and Brave."""
     score = 0

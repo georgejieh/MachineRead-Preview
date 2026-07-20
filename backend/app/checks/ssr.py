@@ -7,7 +7,7 @@ from app.audit_context import AuditContext
 from app.models import CheckResult
 
 if TYPE_CHECKING:
-    from app.qa2_evidence import QA2EvidenceBundle
+    from app.fetch_evidence import FetchEvidence
 
 _WORD_COUNT_THRESHOLD = 50
 _MAIN_CONTENT_WORD_THRESHOLD = 80
@@ -235,7 +235,7 @@ def _analyse_rendering(html: str) -> tuple[str, int]:
 
 async def check_ssr(
     context: AuditContext,
-    qa2_evidence: "QA2EvidenceBundle | None" = None,
+    qa2_evidence: "FetchEvidence | None" = None,
 ) -> CheckResult:
     """Detect whether the page serves readable content without JavaScript."""
     if not context.homepage.ok:

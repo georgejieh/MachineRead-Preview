@@ -9,7 +9,7 @@ from app.fetching import FetchResult, fetch_url, make_root_url
 from app.models import CheckResult
 
 if TYPE_CHECKING:
-    from app.qa2_evidence import QA2EvidenceBundle
+    from app.fetch_evidence import FetchEvidence
 
 _URL_PATTERN = re.compile(r"https?://[^\s)>\"]+")
 _MARKDOWN_LINK_PATTERN = re.compile(r"\[[^\]]+\]\([^)]+\)")
@@ -245,7 +245,7 @@ async def agent_text_access(context: AuditContext) -> tuple[bool, list[str]]:
 
 async def check_llms_txt(
     context: AuditContext,
-    qa2_evidence: "QA2EvidenceBundle | None" = None,
+    qa2_evidence: "FetchEvidence | None" = None,
 ) -> CheckResult:
     """Check for llms.txt and sitemap discovery quality."""
     llms_resp = (

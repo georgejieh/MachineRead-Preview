@@ -44,7 +44,7 @@ from app.models import (
     CheckResult,
 )
 from app.presets import VALID_PRESETS, ResolvedScope, _resolve_legacy, resolve_scope
-from app.qa2_evidence import collect_qa2_evidence
+from app.fetch_evidence import collect_fetch_evidence
 from app.rubric import ESSENTIALS_CHECK_GROUPS, EssentialsCheckGroup
 from app.scoring import build_result
 from app.ssrf import validate_url
@@ -314,7 +314,7 @@ class AuditService:
         include_ecommerce = scope.include_ecommerce
 
         try:
-            qa2_evidence = await collect_qa2_evidence(context, include_ecommerce)
+            qa2_evidence = await collect_fetch_evidence(context, include_ecommerce)
         except Exception:
             qa2_evidence = None
 

@@ -47,7 +47,7 @@ from app.models import (
     ValidationErrorMessage,
 )
 from app.presets import resolve_scope, validate_overrides
-from app.qa2_evidence import collect_qa2_evidence
+from app.fetch_evidence import collect_fetch_evidence
 from app.rubric import ESSENTIALS_CHECK_GROUPS, EssentialsCheckGroup
 from app.report_summary import build_report_summary
 from app.scoring import API_VERSION, build_result
@@ -250,9 +250,9 @@ async def _build_context_or_error(url: str):
 
 async def _run_essential_checks(context, body: AuditRequest) -> list[CheckResult]:
     try:
-        qa2_evidence = await collect_qa2_evidence(context, body.include_ecommerce)
+        qa2_evidence = await collect_fetch_evidence(context, body.include_ecommerce)
     except Exception:
-        logger.exception("QA2 evidence collection failed: %s", context.url)
+        logger.exception("evidence collection failed: %s", context.url)
         qa2_evidence = None
     checks = await asyncio.gather(
         _safe_check(_essential_group("robots_txt"), check_robots(context), logger=logger),
