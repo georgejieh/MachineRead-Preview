@@ -1,6 +1,4 @@
 import asyncio
-import contextlib
-import socket
 import time
 from dataclasses import dataclass
 from urllib.parse import urljoin, urlparse
@@ -8,6 +6,7 @@ from urllib.parse import urljoin, urlparse
 import httpx
 
 from app.crawler_registry import bot_user_agents
+from app.pinned_dns import PinnedHTTPTransport, pinned_dns
 from app.ssrf import resolve_public_address
 
 DEFAULT_USER_AGENT = "MachineRead/1.0"
@@ -17,29 +16,6 @@ BROWSER_USER_AGENT = (
 )
 
 BOT_USER_AGENTS: dict[str, str] = bot_user_agents()
-
-
-@contextlib.contextmanager
-def _pinned_dns(hostname: str, address: str):
-    """Pin DNS resolution of ``hostname`` to ``address`` for one request.
-
-    Replaces ``socket.getaddrinfo`` so the underlying HTTP client connects
-    to the validated address rather than re-resolving — closing the
-    DNS-rebinding window between validation and connect. Restores the
-    original resolver on exit even if the caller raises.
-    """
-    original = socket.getaddrinfo
-
-    def pinned(host, *args, **kwargs):
-        if host == hostname:
-            return [(2, 1, 6, "", (address, 0))]
-        return original(host, *args, **kwargs)
-
-    socket.getaddrinfo = pinned
-    try:
-        yield
-    finally:
-        socket.getaddrinfo = original
 
 
 @dataclass(frozen=True)
@@ -105,10 +81,17 @@ async def fetch_url(
     redirect_chain: list[str] = []
 
     try:
-        async with httpx.AsyncClient(timeout=timeout, follow_redirects=False) as client:
+        async with httpx.AsyncClient(
+            timeout=timeout,
+            follow_redirects=False,
+            transport=PinnedHTTPTransport(),
+        ) as client:
             for _ in range(max_redirects + 1):
-                with _pinned_dns(urlparse(current_url).hostname or "", current_ip):
+                pin_token = pinned_dns.set((urlparse(current_url).hostname or "", current_ip))
+                try:
                     response = await client.request(method_upper, current_url, headers=headers)
+                finally:
+                    pinned_dns.reset(pin_token)
                 elapsed_ms = round((time.monotonic() - start) * 1000)
                 final_url = str(response.url)
 
