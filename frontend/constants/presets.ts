@@ -170,7 +170,7 @@ export const PRESET_DISPLAY: Record<Preset, PresetDisplayEntry> = {
   ecommerce: {
     label: "Ecommerce/Catalog audit",
     description: "Online stores, product catalogs, marketplaces, and DTC sellers with SKUs/GTINs and pricing.",
-    familyCount: 12,
+    familyCount: 11,
     families: [
       "Feed discovery (RSS/Atom)",
       "Product / Offer schema",
@@ -256,6 +256,11 @@ export const NAMED_PRESETS: Preset[] = ["blog", "corporate", "services", "ecomme
  * coherent baseline rather than an empty scope.
  */
 export const DEFAULT_CUSTOM_OVERRIDES: Record<string, boolean> = {
+  // Legacy 3-boolean scope defaults to false (Blog baseline).
+  protocols: false,
+  account_auth: false,
+  ecommerce: false,
+  // Per-family keys mirror the Blog default set.
   feed_discovery: true,
   article_schema: true,
   localbusiness_schema: false,

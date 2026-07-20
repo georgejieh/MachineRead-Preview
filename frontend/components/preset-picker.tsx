@@ -1,7 +1,7 @@
 "use client";
 
 import CustomOverridesPanel from "@/components/custom-overrides-panel";
-import { NAMED_PRESETS, PRESET_DISPLAY } from "@/constants/presets";
+import { DEFAULT_CUSTOM_OVERRIDES, NAMED_PRESETS, PRESET_DISPLAY } from "@/constants/presets";
 import type { Preset } from "@/lib/types";
 
 /**
@@ -35,7 +35,12 @@ export default function PresetPicker({ selection, onChange }: Props) {
   const { preset, customOverrides } = selection;
 
   function selectPreset(next: Preset) {
-    onChange({ preset: next, customOverrides: next === "custom" ? customOverrides : {} });
+    // Seed the panel so the user sees the Blog baseline, not an empty scope.
+    if (next === "custom") {
+      onChange({ preset: "custom", customOverrides: { ...DEFAULT_CUSTOM_OVERRIDES } });
+    } else {
+      onChange({ preset: next, customOverrides: {} });
+    }
   }
 
   function selectLegacy() {
@@ -105,7 +110,6 @@ export default function PresetPicker({ selection, onChange }: Props) {
 
       {preset === "custom" && (
         <CustomOverridesPanel
-          preset="custom"
           overrides={customOverrides}
           onChange={(next) => onChange({ preset: "custom", customOverrides: next })}
         />

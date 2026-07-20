@@ -1,17 +1,13 @@
 "use client";
 
-import { useMemo } from "react";
 import {
   DEFAULT_CUSTOM_OVERRIDES,
   OVERRIDE_CATEGORIES,
   OVERRIDE_LABELS,
-  PRESET_DISPLAY,
   SECONDARY_DIMENSION_KEYS,
 } from "@/constants/presets";
-import type { Preset } from "@/lib/types";
 
 interface Props {
-  preset: Preset;
   overrides: Record<string, boolean>;
   onChange: (next: Record<string, boolean>) => void;
 }
@@ -19,19 +15,11 @@ interface Props {
 /**
  * CustomOverridesPanel
  *
- * Power-user toggle panel. Only visible when the user has selected the
- * Custom preset. Groups the supported `_VALID_OVERRIDE_KEYS` from
- * `backend/app/presets.py` into four categories (Content / Protocols /
- * Commerce / Auth) plus the three secondary top-level dimensions.
- *
- * Impossible combinations for the current base preset are disabled with a
- * tooltip explaining why. The backend remains the source of truth for
- * validation; this panel only mirrors the not-applicable set so the UI
- * stays in sync with `docs/free_preset_taxonomy.md`.
+ * Power-user toggle panel for the Custom preset. Groups the supported
+ * override keys into four categories plus three secondary top-level
+ * dimensions. Backend remains the source of truth for validation.
  */
-export default function CustomOverridesPanel({ preset, overrides, onChange }: Props) {
-  const notAvailable = useMemo(() => new Set(PRESET_DISPLAY[preset].notAvailable), [preset]);
-
+export default function CustomOverridesPanel({ overrides, onChange }: Props) {
   function toggle(key: string, next: boolean) {
     onChange({ ...overrides, [key]: next });
   }
@@ -41,14 +29,13 @@ export default function CustomOverridesPanel({ preset, overrides, onChange }: Pr
   }
 
   function disableAll() {
+    // Walk the default key universe — overrides may be empty on first open.
     const cleared: Record<string, boolean> = {};
-    for (const key of Object.keys(overrides)) {
+    for (const key of Object.keys(DEFAULT_CUSTOM_OVERRIDES)) {
       cleared[key] = false;
     }
     onChange(cleared);
   }
-
-  const presetLabel = PRESET_DISPLAY[preset].label;
 
   return (
     <section className="custom-overrides-panel" aria-label="Custom preset overrides">
@@ -57,8 +44,7 @@ export default function CustomOverridesPanel({ preset, overrides, onChange }: Pr
           <p className="panel-kicker">Power user overrides</p>
           <h3>Custom / Power User toggles</h3>
           <p className="custom-overrides-subtitle">
-            Defaults mirror Blog/Content. Disabled rows are not applicable for{" "}
-            <strong>{presetLabel}</strong> and the backend will reject them.
+            Defaults mirror Blog/Content.
           </p>
         </div>
         <div className="custom-overrides-actions">
@@ -77,18 +63,14 @@ export default function CustomOverridesPanel({ preset, overrides, onChange }: Pr
           {SECONDARY_DIMENSION_KEYS.map((key) => {
             const label = OVERRIDE_LABELS[key] ?? key;
             const checked = overrides[key] === true;
-            const disabled = notAvailable.has(key);
             return (
               <label
                 key={key}
                 className={`custom-override-toggle${checked ? " active" : ""}`}
-                data-disabled={disabled ? "true" : "false"}
-                title={disabled ? `Not available for ${presetLabel}` : undefined}
               >
                 <input
                   type="checkbox"
                   checked={checked}
-                  disabled={disabled}
                   onChange={(event) => toggle(key, event.target.checked)}
                 />
                 <span>{label}</span>
@@ -106,18 +88,14 @@ export default function CustomOverridesPanel({ preset, overrides, onChange }: Pr
               {group.keys.map((key) => {
                 const label = OVERRIDE_LABELS[key] ?? key;
                 const checked = overrides[key] === true;
-                const disabled = notAvailable.has(key);
                 return (
                   <label
                     key={key}
                     className={`custom-override-card${checked ? " active" : ""}`}
-                    data-disabled={disabled ? "true" : "false"}
-                    title={disabled ? `Not available for ${presetLabel}` : undefined}
                   >
                     <input
                       type="checkbox"
                       checked={checked}
-                      disabled={disabled}
                       onChange={(event) => toggle(key, event.target.checked)}
                     />
                     <span className="custom-override-name">{label}</span>
