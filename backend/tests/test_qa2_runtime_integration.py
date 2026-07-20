@@ -19,7 +19,7 @@ from app.checks.search_discovery import (
 from app.checks.ssr import check_ssr
 from app.qa2_evidence import collect_qa2_evidence
 from app.rubric import ESSENTIALS_CHECKED_MAX, ESSENTIALS_CHECK_GROUP_COUNT
-from fixtures import make_audit_context, make_fetch_result
+from backend.tests.fixtures import make_audit_context, make_fetch_result
 
 
 def _page(title: str, path: str) -> str:

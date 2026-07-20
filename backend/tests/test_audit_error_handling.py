@@ -17,7 +17,7 @@ from app.main import (
     _safe_check,
 )
 from app.models import CheckResult
-from fixtures import make_audit_context
+from backend.tests.fixtures import make_audit_context
 
 
 def _passing_check(check_name: str = "html_structure") -> CheckResult:

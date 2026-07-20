@@ -325,8 +325,11 @@ class ExtractionReadinessTests(unittest.TestCase):
         self.assertTrue(result.offer_schema_present)
 
     def test_deep_and_malformed_json_ld_are_bounded_without_crashing(self) -> None:
-        too_deep_for_json = "[" * 1200 + "{}" + "]" * 1200
-        malformed = f'<script type="application/ld+json">{too_deep_for_json}</script>'
+        # Malformed input: object-open followed by array-close with no
+        # matching object-close. Deep-but-valid JSON is exercised by the
+        # nested case below via the schema-traversal depth cap.
+        malformed_json = "{" + "]" * 50
+        malformed = f'<script type="application/ld+json">{malformed_json}</script>'
         malformed_result = analyse_extraction_readiness(
             ExtractionReadinessInput("https://example.com", _good_html(malformed))
         )

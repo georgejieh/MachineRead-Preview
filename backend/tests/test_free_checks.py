@@ -57,7 +57,7 @@ from app.fetching import BROWSER_USER_AGENT, FetchResult
 from app.models import AgentReadinessSummary, CheckResult
 from app.rubric import ESSENTIALS_CHECKED_MAX, ESSENTIALS_CHECK_GROUP_COUNT, ESSENTIALS_CHECK_GROUPS
 from app.scoring import build_result
-from fixtures import (
+from backend.tests.fixtures import (
     BASIC_SITEMAP,
     EXAMPLE_URL,
     ROBOTS_WITH_SITEMAP,
