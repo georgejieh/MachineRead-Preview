@@ -1,8 +1,8 @@
-"""Public audit service shared by main.py and MCP server.
+"""Audit service used by the FastAPI app.
 
-This module extracts reusable audit logic from the FastAPI app into a callable
-async service layer. It preserves all API contracts, SSRF validation, error
-handling, and scoring semantics without requiring HTTP context.
+This module extracts reusable audit logic into a callable async service
+layer. It preserves all API contracts, SSRF validation, error handling,
+and scoring semantics without requiring HTTP context.
 """
 
 import asyncio

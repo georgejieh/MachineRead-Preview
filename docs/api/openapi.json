@@ -18,7 +18,7 @@
     },
     {
       "url": "https://api.machineread.ai",
-      "description": "Public production (reserved future domain; not yet live. The canonical source for this OpenAPI schema is this public repository under docs/api/openapi.json.)"
+      "description": "Public production"
     }
   ],
   "paths": {
@@ -893,7 +893,7 @@
               }
             ],
             "title": "Preset",
-            "description": "QA5-03 preset identifier. When set, the preset wins over the three legacy include_* booleans. When None, the booleans are honored verbatim and custom_overrides must be empty. Supported values: 'blog', 'corporate', 'services', 'ecommerce', 'news', 'saas', 'custom'.",
+            "description": "Preset identifier. When set, the preset wins over the three legacy include_* booleans. When None, the booleans are honored verbatim and custom_overrides must be empty. Supported values: 'blog', 'corporate', 'services', 'ecommerce', 'news', 'saas', 'custom'.",
             "examples": [
               "blog",
               "saas",
@@ -913,7 +913,7 @@
               }
             ],
             "title": "Custom Overrides",
-            "description": "QA5-03 Custom/Power User overrides applied on top of the selected preset. Requires preset='custom' or another preset to be set; rejected when preset is None. Supported keys: 'protocols', 'account_auth', 'ecommerce', 'feed_discovery', 'article_schema', 'localbusiness_schema', 'news_article_schema', 'claimreview_schema', 'product_offer_schema', 'commerce_fields', 'api_catalog', 'mcp', 'a2a', 'agent_skills', 'webmcp', 'oauth_oidc', 'ard_catalog', 'auth_md'.",
+            "description": "Custom/Power User overrides applied on top of the selected preset. Requires preset='custom' or another preset to be set; rejected when preset is None. Supported keys: 'protocols', 'account_auth', 'ecommerce', 'feed_discovery', 'article_schema', 'localbusiness_schema', 'news_article_schema', 'claimreview_schema', 'product_offer_schema', 'commerce_fields', 'api_catalog', 'mcp', 'a2a', 'agent_skills', 'webmcp', 'oauth_oidc', 'ard_catalog', 'auth_md'.",
             "examples": [
               null,
               {
@@ -1052,7 +1052,7 @@
               }
             ],
             "title": "Preset Applied",
-            "description": "QA5-03 preset identifier that won scope resolution for this audit, or ``null`` when the legacy boolean path was used.",
+            "description": "Preset identifier that won scope resolution for this audit, or ``null`` when the legacy boolean path was used.",
             "examples": [
               null,
               "blog",
@@ -1429,10 +1429,10 @@
               "not_applicable"
             ],
             "title": "Evidence Level",
-            "description": "How strong the evidence behind this row is. ``verified`` means the live public response was inspected; ``inferred`` means the row used deterministic heuristics or metadata; ``unknown`` means the row could not be evaluated; ``not_applicable`` means the row was excluded by the active scope/preset.",
-            "default": "verified",
+            "description": "How strong the evidence behind this row is. ``verified`` means the live public response was inspected; ``inferred`` means the row used deterministic heuristics or metadata; ``unknown`` means the row could not be evaluated; ``not_applicable`` means the row was excluded by the active scope/preset. Default is ``inferred``: most check results combine deterministic heuristics with snapshot evidence rather than a full verified live-response crawl, so the safer default avoids overclaiming verification when callers omit the field.",
+            "default": "inferred",
             "examples": [
-              "verified"
+              "inferred"
             ]
           },
           "available_in": {
@@ -1805,7 +1805,16 @@
           "preset": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "blog",
+                  "corporate",
+                  "services",
+                  "ecommerce",
+                  "news",
+                  "saas",
+                  "custom"
+                ]
               },
               {
                 "type": "null"
@@ -1919,6 +1928,7 @@
           },
           "errors": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -1948,7 +1958,7 @@
     }
   ],
   "externalDocs": {
-    "description": "MachineRead product docs, methodology, and caveats (reserved future production URL; not yet live. The canonical source for product documentation is this public repository under docs/api/.)",
+    "description": "MachineRead product docs, methodology, and caveats",
     "url": "https://machineread.ai/docs"
   }
 }
