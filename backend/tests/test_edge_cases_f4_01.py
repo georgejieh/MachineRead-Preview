@@ -1,4 +1,4 @@
-"""F4-01 edge-case tests for SSRF, fetching, rate-limit, cache, presets,
+"""Edge-case tests for SSRF, fetching, rate-limit, cache, presets,
 scoring, percentile, position-label, and HTML-boundary paths.
 
 The tests in this module cover off-by-one boundaries and edge inputs
@@ -563,7 +563,7 @@ class AuditCacheTests(unittest.TestCase):
 
     def test_cache_key_differs_for_different_overrides(self) -> None:
         """Two runs with the same URL/preset but different override dicts
-        must produce distinct cache keys (F4-08, Fable #3). Without
+        must produce distinct cache keys . Without
         overrides in the key, the second put would overwrite the first
         and a get for the first override set would return the wrong
         cached result.

@@ -1,4 +1,4 @@
-"""F3-12 projection tests for the agent-oriented report summary.
+"""Projection tests for the agent-oriented report summary.
 
 These tests build synthetic ``AuditResult`` fixtures and call
 ``build_report_summary`` directly. The expected contract is captured in the

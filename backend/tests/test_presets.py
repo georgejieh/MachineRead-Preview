@@ -1,4 +1,4 @@
-"""QA5-03 preset model unit tests.
+"""Preset model unit tests.
 
 Covers the 7-preset catalog, ResolvedScope resolution, validation rules,
 precedence over legacy booleans, backward compatibility, and the benchmark
@@ -86,7 +86,7 @@ class PresetCatalogTests(unittest.TestCase):
 
     def test_custom_defaults_to_blog_base(self) -> None:
         scope = resolve_scope("custom", None)
-        # Custom starts from Blog/Content base per QA5-03.
+        # Custom starts from the Blog/Content base.
         blog_scope = resolve_scope("blog", None)
         self.assertEqual(scope.include_protocols, blog_scope.include_protocols)
         self.assertEqual(

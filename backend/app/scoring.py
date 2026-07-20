@@ -5,7 +5,7 @@ from app.presets import ResolvedScope, _resolve_legacy
 
 _PILLAR_MAX = PillarMax(off_site=30, scrapability=40, seo=30)
 
-# F3-02: keep the API version constant in one place so the same value flows
+# keep the API version constant in one place so the same value flows
 # through scoring, models, and OpenAPI metadata. Bumping this is the contract
 # signal used by agents to detect additive changes vs. breaking ones.
 API_VERSION = "1.0"
@@ -77,7 +77,7 @@ def build_result(
 ) -> AuditResult:
     """Assemble the final AuditResult from individual check results.
 
-    The ``scope`` argument is the QA5-03 preferred path. The three legacy
+    The ``scope`` argument is the preferred path. The three legacy
     booleans remain supported for backwards-compatible callers (and are what
     the existing tests use); when ``scope`` is None, the legacy booleans are
     promoted into a synthesised :class:`ResolvedScope` so the rest of the

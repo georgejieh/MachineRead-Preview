@@ -1,4 +1,4 @@
-"""F3-12: agent-oriented compact ``AuditSummary`` projection.
+"""agent-oriented compact ``AuditSummary`` projection.
 
 The projection is a pure, deterministic function from
 :class:`app.models.AuditResult` to :class:`app.models.AuditSummary`. It does

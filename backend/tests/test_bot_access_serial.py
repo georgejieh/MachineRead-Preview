@@ -1,4 +1,4 @@
-"""F4-12: serialized bot probes with 429 retry.
+"""serialized bot probes with 429 retry.
 
 These tests target :func:`app.checks.bot_access._probe_bots` and
 :func:`app.checks.bot_access._probe_one_bot` directly so we can assert the

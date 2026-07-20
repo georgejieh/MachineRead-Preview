@@ -328,7 +328,7 @@ def _quality_penalty(signals: RobotsQualitySignals) -> int:
 
 
 def _score_access(access: dict[str, str]) -> int:
-    # Design note (Fable 5 review): ``not_mentioned`` earns 0.7 (not 0.0)
+    # Design note : ``not_mentioned`` earns 0.7 (not 0.0)
     # because silent non-mention is the standard practice for benign crawlers,
     # not active blocking. Most sites omit explicit ``Allow`` rules for benign
     # bots because robots.txt default behaviour already permits uncited

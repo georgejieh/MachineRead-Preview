@@ -1047,7 +1047,7 @@ async def check_search_discovery(
             "sampled sitemap URLs are same-site, HTTPS, accessible, indexable, and metadata-readable"
         )
         positives.extend(sample_metadata.positives[:3])
-        # Fable 5 nit (F4-17 c): when the pass branch is taken, any blurb
+        # when the pass branch is taken, any blurb
         # issues that accumulated above were silently dropped. Surface them
         # as non-scoring caveats so the operator sees the proxy notes rather
         # than losing the signal on a clean-looking row.

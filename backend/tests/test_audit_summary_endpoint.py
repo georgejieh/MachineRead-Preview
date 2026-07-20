@@ -1,4 +1,4 @@
-"""F3-12 endpoint tests for POST /v1/audit/summary.
+"""Endpoint tests for POST /v1/audit/summary.
 
 The summary endpoint shares the FastAPI ``app`` instance with ``/v1/audit``
 and ``/audit``, reuses the same rate-limit bucket, the same 200/400/422/429/500

@@ -1,5 +1,5 @@
 /**
- * Frontend mirror of the QA5-03 preset catalog.
+ * Frontend mirror of the preset catalog.
  *
  * This module exposes UI-only metadata for the preset picker. It is NOT a
  * substitute for backend validation in `backend/app/presets.py` — the

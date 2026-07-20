@@ -7,16 +7,16 @@ from app.presets import VALID_PRESETS, PresetName, _VALID_OVERRIDE_KEYS
 PillarName = Literal["off_site", "scrapability", "seo"]
 EffortLevel = Literal["low", "medium", "high"]
 
-# F3-03: a curated OpenAPI example for the audit request body. The example is
-# the smallest legal payload (URL only) so agents can copy/paste it as a
-# smoke test without needing to understand presets, overrides, or scope
-# toggles on first contact.
+# A curated OpenAPI example for the audit request body. The example is the
+# smallest legal payload (URL only) so agents can copy/paste it as a smoke
+# test without needing to understand presets, overrides, or scope toggles
+# on first contact.
 _AUDIT_REQUEST_EXAMPLE: dict = {
     "url": "https://example.com/",
 }
 
-# F3-03: a second example showing the preset path so agents discover the
-# QA5-03 preset model from the schema without reading docs first.
+# A second example showing the preset path so agents discover the preset
+# model from the schema without reading docs first.
 _AUDIT_REQUEST_PRESET_EXAMPLE: dict = {
     "url": "https://example.com/",
     "preset": "blog",
@@ -24,9 +24,9 @@ _AUDIT_REQUEST_PRESET_EXAMPLE: dict = {
 
 
 class AuditRequest(BaseModel):
-    # F3-03: OpenAPI examples + field-level descriptions so the public schema
-    # is self-explanatory for agents. The model_config block provides the
-    # JSON Schema ``examples`` array surfaced under AuditRequest in OpenAPI.
+    # OpenAPI examples + field-level descriptions so the public schema is
+    # self-explanatory for agents. The model_config block provides the JSON
+    # Schema ``examples`` array surfaced under AuditRequest in OpenAPI.
     model_config = ConfigDict(
         json_schema_extra={
             "examples": [
@@ -44,10 +44,10 @@ class AuditRequest(BaseModel):
         ),
         examples=["https://example.com/"],
     )
-    # F3-03: the three legacy booleans remain part of the public contract
-    # (existing integrations depend on them) but the QA5-03 preset path is
-    # the recommended one. Marking the fields deprecated surfaces this in
-    # generated client SDKs and OpenAPI tooling without breaking callers.
+    # The three legacy booleans remain part of the public contract (existing
+    # integrations depend on them) but the preset path is the recommended one.
+    # Marking the fields deprecated surfaces this in generated client SDKs and
+    # OpenAPI tooling without breaking callers.
     include_protocols: bool = Field(
         default=False,
         deprecated=True,
@@ -87,7 +87,7 @@ class AuditRequest(BaseModel):
     preset: PresetName | None = Field(
         default=None,
         description=(
-            "QA5-03 preset identifier. When set, the preset wins over the "
+            "Preset identifier. When set, the preset wins over the "
             "three legacy include_* booleans. When None, the booleans are "
             "honored verbatim and custom_overrides must be empty. Supported "
             "values: 'blog', 'corporate', 'services', 'ecommerce', 'news', "
@@ -98,7 +98,7 @@ class AuditRequest(BaseModel):
     custom_overrides: dict[str, bool] | None = Field(
         default=None,
         description=(
-            "QA5-03 Custom/Power User overrides applied on top of the "
+            "Custom/Power User overrides applied on top of the "
             "selected preset. Requires preset='custom' or another preset to "
             "be set; rejected when preset is None. Supported keys: "
             "'protocols', 'account_auth', 'ecommerce', 'feed_discovery', "
@@ -191,7 +191,7 @@ class CheckResult(BaseModel):
             "row used deterministic heuristics or metadata; ``unknown`` "
             "means the row could not be evaluated; ``not_applicable`` means "
             "the row was excluded by the active scope/preset. Default is "
-            "``inferred`` (F4-17 e): most check results combine deterministic "
+            "``inferred``: most check results combine deterministic "
             "heuristics with snapshot evidence rather than a full verified "
             "live-response crawl, so the safer default avoids overclaiming "
             "verification when callers omit the field."
@@ -296,11 +296,11 @@ class AuditScope(BaseModel):
             "excluded surfaces."
         ),
     )
-    # QA5-03 preset resolution output (added fields).
+    # Preset resolution output (added fields).
     preset_applied: str | None = Field(
         default=None,
         description=(
-            "QA5-03 preset identifier that won scope resolution for this "
+            "Preset identifier that won scope resolution for this "
             "audit, or ``null`` when the legacy boolean path was used."
         ),
         examples=[None, "blog", "saas"],
@@ -581,7 +581,7 @@ class AgentReadinessSummary(BaseModel):
 
 
 class AuditResult(BaseModel):
-    # F3-02: API versioning. Additive only — the field carries the contract
+    # API versioning. Additive only — the field carries the contract
     # version that produced this response. Clients may rely on it to detect
     # future additions without breaking on them.
     api_version: str = Field(
@@ -641,7 +641,7 @@ class AuditResult(BaseModel):
     )
 
 
-# F3-02: explicit public error models. These shapes are referenced in the
+# Explicit public error models. These shapes are referenced in the
 # `responses={...}` mapping on `/v1/audit` so the autogenerated OpenAPI schema
 # documents the exact contract for agents.
 class ErrorMessage(BaseModel):
@@ -688,7 +688,7 @@ class RateLimitErrorMessage(BaseModel):
     )
 
 
-# F3-12: agent-oriented compact report summary. ``AuditSummary`` is the
+# Agent-oriented compact report summary. ``AuditSummary`` is the
 # strict-mode projection of ``AuditResult`` returned by
 # ``POST /v1/audit/summary``. It excludes LLM prose, finding/fix strings,
 # benchmark peer entries, agent-readiness passed/missing/not_checked lists,
@@ -858,7 +858,7 @@ class SummaryAttentionItem(BaseModel):
     effort: _SUMMARY_EFFORT = Field(description="Estimated remediation effort.")
 
 
-# F3-12: fixed ordered tuple of limitation codes that always appear in the
+# Fixed ordered tuple of limitation codes that always appear in the
 # 200 payload in the same order. Exposed as a module-level constant so
 # tests, projection code, and the OpenAPI examples all reference the same
 # source of truth.
@@ -876,7 +876,7 @@ SUMMARY_LIMITATION_CODES: tuple[
 
 
 class AuditSummary(BaseModel):
-    # F3-12: the agent-oriented compact report summary. The shape is
+    # The agent-oriented compact report summary. The shape is
     # strict, additive-only, and intentionally smaller than
     # ``AuditResult`` so agents can reason about Essentials without
     # pulling the full per-check evidence into context.

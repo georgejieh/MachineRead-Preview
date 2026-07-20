@@ -27,7 +27,7 @@ interface Props {
  * row. The picker exposes six named presets + one Custom card + a separate
  * "General website (legacy)" fallback so existing flows keep working
  * unchanged. The picker itself never validates preset compatibility — it
- * just mirrors the QA5-03 catalog for display and lets the backend
+ * just mirrors the preset catalog for display and lets the backend
  * (`backend/app/presets.py`) reject impossible combinations at the API
  * boundary.
  */

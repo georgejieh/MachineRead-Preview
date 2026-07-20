@@ -6,14 +6,16 @@ from urllib.parse import urlparse
 def _is_private(address: str) -> bool:
     """Return True if ``address`` points at a non-public destination.
 
-    Closes three bypasses against a naive IPv4-only blocklist:
+    Handles three categories of non-public addresses that a naive
+    IPv4-only blocklist misses:
 
     - IPv4-mapped IPv6 (``::ffff:127.0.0.1``) unwraps to the embedded
       IPv4 so the global check applies to the real destination.
     - The unspecified address (``0.0.0.0`` / ``::``) routes to the local
-      host on most platforms and must not be treated as a public IP.
-    - Carrier-grade NAT (``100.64.0.0/10``) is rejected because it is
-      never a legitimate web destination for a public audit target.
+      host on most platforms and is not a public IP.
+    - Carrier-grade NAT (``100.64.0.0/10``) is treated as non-public
+      because it is never a legitimate web destination for a public
+      audit target.
     """
     try:
         ip = ipaddress.ip_address(address)

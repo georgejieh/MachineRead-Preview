@@ -236,7 +236,7 @@ class SchemaLdTests(unittest.TestCase):
         self.assertNotIn("shipping", result.fix.lower())
 
     def test_speakable_detected_in_finding(self) -> None:
-        """QA4-04: Speakable markup is a tracked-only signal — finding annotates it but score is unchanged.
+        """Speakable markup is a tracked-only signal — finding annotates it but score is unchanged.
 
         The same Product JSON-LD is run twice: once without speakable (baseline)
         and once with a SpeakableSpecification @type. The score, state, fix, and
@@ -1525,7 +1525,7 @@ class BotAccessTests(unittest.IsolatedAsyncioTestCase):
         self.assertIn("visible words", result.finding)
 
     async def test_bot_access_ignores_recaptcha_script_tag_in_body(self) -> None:
-        """F4-06: A Google reCAPTCHA ``<script src="…/recaptcha/api.js">`` tag
+        """A Google reCAPTCHA ``<script src="…/recaptcha/api.js">`` tag
         embedded in a normal page is not a challenge page.
 
         Before the fix the body substring scan matched the literal
@@ -1564,7 +1564,7 @@ class BotAccessTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("challenge page", result.finding)
 
     async def test_bot_access_ignores_captcha_substring_in_response_headers(self) -> None:
-        """F4-06: ``captcha`` must not be matched inside HTTP response headers.
+        """``captcha`` must not be matched inside HTTP response headers.
 
         Content-Security-Policy and other response headers can legitimately
         include ``captcha`` as a directive keyword (e.g. ``script-src …/recaptcha/``).
@@ -1613,7 +1613,7 @@ class BotAccessTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("challenge page", result.finding)
 
     async def test_bot_access_baseline_suppresses_site_wide_challenge(self) -> None:
-        """F4-06: If the browser baseline ALSO matches a challenge signature,
+        """If the browser baseline ALSO matches a challenge signature,
         the finding is a site-wide pattern, not bot discrimination, and is
         suppressed for every bot probe.
         """
@@ -1648,7 +1648,7 @@ class BotAccessTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("challenge page", result.finding)
 
     async def test_bot_access_still_flags_real_captcha_title_for_bots(self) -> None:
-        """F4-06 positive case: a real CAPTCHA challenge page (with ``captcha``
+        """Positive case: a real CAPTCHA challenge page (with ``captcha``
         in the title) MUST still be flagged — but only for bots that see it
         when the browser probe did NOT see the same challenge.
 
@@ -1722,7 +1722,7 @@ class BotAccessTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result.score, 1)
 
     async def test_bot_access_baseline_suppresses_captcha_title(self) -> None:
-        """F4-06: a title that literally contains ``captcha`` does NOT trigger
+        """a title that literally contains ``captcha`` does NOT trigger
         the bot-only finding when the browser baseline also contains
         ``captcha`` in its title (site-wide pattern, not bot discrimination).
         """

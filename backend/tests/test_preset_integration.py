@@ -1,4 +1,4 @@
-"""QA5-05 preset pipeline integration tests.
+"""Preset pipeline integration tests.
 
 End-to-end coverage that proves every one of the seven presets works through
 the real FastAPI /audit pipeline, lands on the expected benchmark scope key,
@@ -44,9 +44,9 @@ from app.presets import (  # noqa: E402
 
 
 # (preset_key, expected_scope_key, expected_agent_max)
-# These pairs are derived from the QA5-03 preset definitions. The expected
-# scope key matches the documented 8-variant benchmark contract; the expected
-# agent max matches ``_agent_max_for_scope`` in ``backend/app/benchmarks.py``.
+# These pairs are derived from the preset definitions. The expected scope key
+# matches the documented 8-variant benchmark contract; the expected agent
+# max matches ``_agent_max_for_scope`` in ``backend/app/benchmarks.py``.
 EXPECTED_PRESET_SCOPE: dict[str, tuple[str, int]] = {
     "blog": ("p0_a0_c0", 8),
     "corporate": ("p0_a0_c0", 8),
@@ -54,7 +54,7 @@ EXPECTED_PRESET_SCOPE: dict[str, tuple[str, int]] = {
     "ecommerce": ("p1_a1_c1", 21),
     "news": ("p0_a0_c0", 8),
     "saas": ("p1_a1_c0", 17),
-    # Custom defaults to the Blog/Content base per QA5-03.
+    # Custom defaults to the Blog/Content base.
     "custom": ("p0_a0_c0", 8),
 }
 

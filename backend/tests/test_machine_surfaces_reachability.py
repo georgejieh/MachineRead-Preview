@@ -196,7 +196,7 @@ class MachineSurfaceReachabilityTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(note, "")
 
     # ------------------------------------------------------------------
-    # QA4-03: Conventional path probes (Part A)
+    # Conventional path probes (Part A)
     # ------------------------------------------------------------------
 
     async def test_conventional_docs_path_appears_positively(self) -> None:
@@ -334,7 +334,7 @@ class MachineSurfaceReachabilityTests(unittest.IsolatedAsyncioTestCase):
         )
 
     # ------------------------------------------------------------------
-    # QA4-03: Docs-page reachability (Part B)
+    # Docs-page reachability (Part B)
     # ------------------------------------------------------------------
 
     async def test_docs_page_linked_surface_drops_orphan_note(self) -> None:
@@ -454,7 +454,7 @@ class MachineSurfaceReachabilityTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("Reachability note:", result.finding)
 
     # ------------------------------------------------------------------
-    # QA4-04: ai-plugin.json valid + malformed (Part A)
+    # ai-plugin.json valid + malformed (Part A)
     # ------------------------------------------------------------------
 
     async def test_ai_plugin_valid_shape_detected(self) -> None:
@@ -511,7 +511,7 @@ class MachineSurfaceReachabilityTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("legacy ai-plugin.json", result.finding)
 
     # ------------------------------------------------------------------
-    # QA4-04: NLWeb Schemamap robots directive (Part B)
+    # NLWeb Schemamap robots directive (Part B)
     # ------------------------------------------------------------------
 
     async def test_nlweb_schemamap_detected(self) -> None:

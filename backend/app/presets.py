@@ -1,4 +1,4 @@
-"""MachineRead preset request model (QA5-03).
+"""MachineRead preset request model.
 
 This module resolves the user-selected preset (and optional Custom/Power User
 overrides) into a deterministic ``ResolvedScope`` that the rest of the audit
@@ -112,8 +112,11 @@ class _PresetDefinition:
     not_applicable: frozenset[str] = field(default_factory=frozenset)
 
 
-# Per-preset definitions. Each preset is a deterministic identifier with the
-# categories and defaults documented in docs/free_preset_taxonomy.md.
+# Per-preset definitions. Each preset is a deterministic identifier with
+# categories and defaults chosen to fit the typical site shape for the
+# preset's name. The seven named presets plus Custom give eight total
+# scope keys (p0_a0_c0, p1_a0_c0, p0_a1_c0, p1_a1_c0, p0_a0_c1, p1_a0_c1,
+# p0_a1_c1, p1_a1_c1) that drive benchmark and agent-readiness scoring.
 _BLOG = _PresetDefinition(
     key="blog",
     label="Blog/Content audit",
@@ -124,7 +127,7 @@ _BLOG = _PresetDefinition(
     default_families={
         "feed_discovery": True,
         "article_schema": True,
-        # speakable is tracked-only per QA4-04 and is not in _VALID_OVERRIDE_KEYS
+        # speakable is tracked-only and is not in _VALID_OVERRIDE_KEYS
         "localbusiness_schema": False,
         "news_article_schema": False,
         "claimreview_schema": False,
@@ -363,7 +366,7 @@ _CUSTOM = _PresetDefinition(
     include_account_auth=False,
     include_ecommerce=False,
     machine_surfaces="common-contextual",
-    # Custom starts from the Blog/Content base per the QA5-03 taxonomy.
+    # Custom starts from the Blog/Content base.
     default_families=dict(_BLOG.default_families),
     not_applicable=frozenset(),  # Custom accepts every supported family.
 )

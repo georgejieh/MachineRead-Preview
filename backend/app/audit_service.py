@@ -382,7 +382,7 @@ class AuditService:
         1. Validate URL length <= 2048
         2. SSRF validate_url for safety
         3. Resolve preset/scope
-        4. Check cache; cache hits skip the rate-limit charge (F4-15)
+        4. Check cache; cache hits skip the rate-limit charge 
         5. Check rate limits (only on cache miss)
         6. Build audit context
         7. Run essential checks
@@ -433,7 +433,7 @@ class AuditService:
             _log.error("audit failed: code=INVALID_PRESET")
             return StructuredError(code="INVALID_PRESET", message=str(exc))
 
-        # F4-15: check the cache BEFORE charging the rate limiter. Cache hits
+        # check the cache BEFORE charging the rate limiter. Cache hits
         # serve the same result without consuming a quota slot, so repeated
         # identical requests don't exhaust the limit.
         cached = self._cache.get(
@@ -839,11 +839,11 @@ class AuditService:
             "pillars_max": result.pillar_max.model_dump(),
             "checks_count": len(result.checks),
             "rate_limit": {
-                # Fable 5 nit (F4-17 d): use the configured RateLimiter
+                # use the configured RateLimiter
                 # attribute (``_max_requests``) instead of hardcoding ``3``.
-                # Using ``self._rate_limiter.limit`` (as the Fable 5 prompt
-                # suggested) would crash because ``RateLimiter`` exposes its
-                # capacity as ``_max_requests`` (see audit_service.py:117).
+                # Using ``self._rate_limiter.limit`` would crash because
+                # ``RateLimiter`` exposes its capacity as ``_max_requests``
+                # (see audit_service.py:117).
                 "limit": self._rate_limiter._max_requests,
                 "remaining": rate_remaining,
                 "reset_at": rate_reset,
