@@ -3,24 +3,35 @@ import socket
 from urllib.parse import urlparse
 
 
-_PRIVATE_NETWORKS = [
-    ipaddress.ip_network("10.0.0.0/8"),
-    ipaddress.ip_network("172.16.0.0/12"),
-    ipaddress.ip_network("192.168.0.0/16"),
-    ipaddress.ip_network("127.0.0.0/8"),
-    ipaddress.ip_network("169.254.0.0/16"),
-    ipaddress.ip_network("::1/128"),
-    ipaddress.ip_network("fc00::/7"),
-    ipaddress.ip_network("fe80::/10"),
-]
-
-
 def _is_private(address: str) -> bool:
+    """Return True if ``address`` points at a non-public destination.
+
+    Closes three bypasses against a naive IPv4-only blocklist:
+
+    - IPv4-mapped IPv6 (``::ffff:127.0.0.1``) unwraps to the embedded
+      IPv4 so the global check applies to the real destination.
+    - The unspecified address (``0.0.0.0`` / ``::``) routes to the local
+      host on most platforms and must not be treated as a public IP.
+    - Carrier-grade NAT (``100.64.0.0/10``) is rejected because it is
+      never a legitimate web destination for a public audit target.
+    """
     try:
         ip = ipaddress.ip_address(address)
-        return any(ip in net for net in _PRIVATE_NETWORKS)
     except ValueError:
         return False
+    if isinstance(ip, ipaddress.IPv6Address) and ip.ipv4_mapped is not None:
+        ip = ip.ipv4_mapped
+    if ip.is_unspecified:
+        return True
+    return not ip.is_global
+
+
+def _resolve_addresses(hostname: str) -> list[tuple[str, int | None]]:
+    try:
+        resolved = socket.getaddrinfo(hostname, None)
+    except socket.gaierror as exc:
+        raise ValueError(f"Cannot resolve hostname: {exc}") from exc
+    return [(sockaddr[0], sockaddr[1] if len(sockaddr) > 1 else None) for *_, sockaddr in resolved]
 
 
 def validate_url(url: str) -> str:
@@ -34,14 +45,39 @@ def validate_url(url: str) -> str:
     if not hostname:
         raise ValueError("URL has no hostname")
 
-    try:
-        resolved = socket.getaddrinfo(hostname, None)
-    except socket.gaierror as exc:
-        raise ValueError(f"Cannot resolve hostname: {exc}") from exc
-
-    for _, _, _, _, sockaddr in resolved:
-        address = sockaddr[0]
+    for address, _ in _resolve_addresses(hostname):
         if _is_private(address):
             raise ValueError(f"URL resolves to a private address: {address}")
 
     return url
+
+
+def resolve_public_address(url: str) -> tuple[str, str, int | None]:
+    """Return ``(url, address, port)`` for a public destination or raise.
+
+    Resolves the hostname once, rejects the URL if any resolved address is
+    private, and returns the first safe address so the caller can pin the
+    connection to it and close the DNS-rebinding window between
+    validation and connect.
+    """
+    parsed = urlparse(url)
+
+    if parsed.scheme.lower() not in ("http", "https"):
+        raise ValueError(f"Scheme '{parsed.scheme}' is not allowed")
+
+    hostname = parsed.hostname
+    if not hostname:
+        raise ValueError("URL has no hostname")
+
+    port = parsed.port
+    addresses = _resolve_addresses(hostname)
+    if not addresses:
+        raise ValueError(f"Cannot resolve hostname: {hostname}")
+
+    safe: tuple[str, int | None] | None = None
+    for address, addr_port in addresses:
+        if _is_private(address):
+            raise ValueError(f"URL resolves to a private address: {address}")
+        if safe is None:
+            safe = (address, addr_port)
+    return url, safe[0], port or safe[1]

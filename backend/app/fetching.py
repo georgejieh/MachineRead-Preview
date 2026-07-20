@@ -1,11 +1,14 @@
+import asyncio
+import contextlib
+import socket
 import time
 from dataclasses import dataclass
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 
 import httpx
 
 from app.crawler_registry import bot_user_agents
-from app.ssrf import validate_url
+from app.ssrf import resolve_public_address
 
 DEFAULT_USER_AGENT = "MachineRead/1.0"
 BROWSER_USER_AGENT = (
@@ -14,6 +17,29 @@ BROWSER_USER_AGENT = (
 )
 
 BOT_USER_AGENTS: dict[str, str] = bot_user_agents()
+
+
+@contextlib.contextmanager
+def _pinned_dns(hostname: str, address: str):
+    """Pin DNS resolution of ``hostname`` to ``address`` for one request.
+
+    Replaces ``socket.getaddrinfo`` so the underlying HTTP client connects
+    to the validated address rather than re-resolving — closing the
+    DNS-rebinding window between validation and connect. Restores the
+    original resolver on exit even if the caller raises.
+    """
+    original = socket.getaddrinfo
+
+    def pinned(host, *args, **kwargs):
+        if host == hostname:
+            return [(2, 1, 6, "", (address, 0))]
+        return original(host, *args, **kwargs)
+
+    socket.getaddrinfo = pinned
+    try:
+        yield
+    finally:
+        socket.getaddrinfo = original
 
 
 @dataclass(frozen=True)
@@ -68,7 +94,7 @@ async def fetch_url(
     method_upper = (method or "GET").upper()
 
     try:
-        current_url = validate_url(url)
+        current_url, current_ip, _ = await asyncio.to_thread(resolve_public_address, url)
     except ValueError as exc:
         return FetchResult(url, url, None, {}, "", 0, [], str(exc))
 
@@ -81,7 +107,8 @@ async def fetch_url(
     try:
         async with httpx.AsyncClient(timeout=timeout, follow_redirects=False) as client:
             for _ in range(max_redirects + 1):
-                response = await client.request(method_upper, current_url, headers=headers)
+                with _pinned_dns(urlparse(current_url).hostname or "", current_ip):
+                    response = await client.request(method_upper, current_url, headers=headers)
                 elapsed_ms = round((time.monotonic() - start) * 1000)
                 final_url = str(response.url)
 
@@ -110,7 +137,7 @@ async def fetch_url(
 
                 next_url = urljoin(final_url, location)
                 try:
-                    current_url = validate_url(next_url)
+                    next_url, next_ip, _ = await asyncio.to_thread(resolve_public_address, next_url)
                 except ValueError as exc:
                     return FetchResult(
                         requested_url=url,
@@ -122,7 +149,8 @@ async def fetch_url(
                         redirect_chain=redirect_chain,
                         error=f"Unsafe redirect target: {exc}",
                     )
-                redirect_chain.append(current_url)
+                redirect_chain.append(next_url)
+                current_url, current_ip = next_url, next_ip
 
     except httpx.RequestError as exc:
         elapsed_ms = round((time.monotonic() - start) * 1000)
