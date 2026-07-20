@@ -347,6 +347,176 @@ button:disabled {
   padding: 7px 9px;
 }
 
+/* Preset picker. */
+.preset-picker { display: grid; gap: 14px; }
+.preset-picker-heading { display: grid; gap: 4px; }
+.preset-picker-subtitle { margin: 0; color: var(--muted-strong); font-size: 13px; line-height: 1.45; }
+.preset-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+.preset-card {
+  display: grid; gap: 6px;
+  text-align: left;
+  border: 1px solid var(--border);
+  background: var(--surface-muted);
+  color: var(--text);
+  padding: 12px 13px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 120ms ease, background 120ms ease, transform 120ms ease;
+}
+.preset-card:hover { border-color: var(--border-strong); }
+.preset-card.active { border-color: var(--primary); background: var(--primary-soft); }
+.preset-card-kicker {
+  font-size: 11px; font-weight: 760; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--muted);
+}
+.preset-card-title { font-size: 15px; font-weight: 700; color: var(--text); }
+.preset-card-description { font-size: 12.5px; color: var(--muted-strong); line-height: 1.4; }
+.preset-card-custom { border-style: dashed; }
+.preset-card-custom.active { border-style: solid; }
+
+.preset-legacy-row { display: grid; gap: 8px; }
+.preset-legacy-button {
+  display: grid; gap: 4px;
+  text-align: left;
+  border: 1px solid var(--border);
+  background: var(--surface-muted);
+  color: var(--text);
+  padding: 11px 13px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.preset-legacy-button.active { border-color: var(--amber); background: var(--amber-soft); }
+.preset-legacy-kicker {
+  font-size: 11px; font-weight: 760; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--muted);
+}
+.preset-legacy-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.preset-legacy-description { font-size: 12.5px; color: var(--muted-strong); line-height: 1.4; }
+
+.custom-overrides-panel {
+  display: grid;
+  gap: 16px;
+  border-top: 1px dashed var(--border);
+  padding-top: 14px;
+}
+
+.custom-overrides-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.custom-overrides-subtitle {
+  margin: 0;
+  color: var(--muted-strong);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.custom-overrides-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.custom-overrides-secondary {
+  display: grid;
+  gap: 8px;
+}
+
+.custom-overrides-toggle-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.custom-override-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface-muted);
+  color: var(--text);
+  padding: 7px 11px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12.5px;
+}
+
+.custom-override-toggle.active {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.custom-override-toggle[data-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.custom-overrides-categories {
+  display: grid;
+  gap: 12px;
+}
+
+.custom-overrides-group {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-muted);
+  padding: 10px 12px;
+  margin: 0;
+}
+
+.custom-overrides-group legend {
+  padding: 0 6px;
+  font-size: 11px;
+  font-weight: 760;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.custom-overrides-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.custom-override-card {
+  display: grid;
+  gap: 2px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12.5px;
+}
+
+.custom-override-card.active {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.custom-override-card[data-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.custom-override-name {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.custom-override-key {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+
 .error-banner {
   display: grid;
   gap: 4px;
