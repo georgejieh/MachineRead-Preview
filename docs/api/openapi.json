@@ -1,0 +1,1954 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "MachineRead API",
+    "description": "Public audit API for the free MachineRead Essentials scan. Use `POST /v1/audit` for new integrations; the unversioned `POST /audit` remains available as a compatibility alias. All responses carry an `api_version` field. Rate-limit guidance is returned on every response via `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`, and `Retry-After` (on 429).",
+    "contact": {
+      "name": "MachineRead"
+    },
+    "license": {
+      "name": "MIT"
+    },
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8000",
+      "description": "Local development"
+    },
+    {
+      "url": "https://api.machineread.ai",
+      "description": "Public production (reserved future domain; not yet live. The canonical source for this OpenAPI schema is this public repository under docs/api/openapi.json.)"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Health probe",
+        "description": "Returns ``{\"status\": \"ok\"}`` when the API is responsive. Used by uptime monitors and orchestration tooling; safe to call without authentication.",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Health Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/.well-known/api-catalog": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Public API catalog linkset",
+        "operationId": "api_catalog__well_known_api_catalog_get",
+        "responses": {
+          "200": {
+            "description": "RFC 9264 linkset pointing at the public OpenAPI schema, ARD ai-catalog, llms.txt, and product docs.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              },
+              "application/linkset+json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/audit": {
+      "post": {
+        "tags": [
+          "Audit"
+        ],
+        "summary": "Run an Essentials audit",
+        "description": "Run a free MachineRead Essentials audit against a public HTTP(S) URL. Returns the full public contract including the ``api_version`` field, pillar scores, benchmark comparison, strict agent-readiness summary, and per-check evidence. Rate-limit headers (`X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`) are returned on every response and `Retry-After` is added on 429.",
+        "operationId": "audit_v1_audit_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditRequest"
+              },
+              "examples": {
+                "minimal": {
+                  "summary": "Minimal request",
+                  "value": {
+                    "url": "https://example.com/"
+                  }
+                },
+                "preset_blog": {
+                  "summary": "Preset-based request",
+                  "value": {
+                    "url": "https://example.com/",
+                    "preset": "blog"
+                  }
+                },
+                "custom_overrides": {
+                  "summary": "Custom/Power User request",
+                  "value": {
+                    "url": "https://example.com/",
+                    "preset": "custom",
+                    "custom_overrides": {
+                      "feed_discovery": true,
+                      "api_catalog": true
+                    }
+                  }
+                },
+                "legacy_booleans": {
+                  "summary": "Legacy boolean scope (deprecated)",
+                  "value": {
+                    "url": "https://example.com/",
+                    "include_protocols": true,
+                    "include_account_auth": false,
+                    "include_ecommerce": false
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Audit completed successfully. The body is the full public AuditResult contract: api_version, resolved scope, overall score, pillar scores, strict agent-readiness summary, public benchmark comparison, and per-check group evidence.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditResult"
+                },
+                "example": {
+                  "api_version": "1.0",
+                  "url": "https://example.com/",
+                  "scope": {
+                    "include_protocols": false,
+                    "include_account_auth": false,
+                    "include_ecommerce": false,
+                    "label": "Blog/Content audit",
+                    "included_optional_surfaces": [],
+                    "excluded_optional_surfaces": [
+                      "protocol",
+                      "account_auth",
+                      "ecommerce"
+                    ],
+                    "preset_applied": "blog",
+                    "overrides_applied": {},
+                    "included_families": [
+                      "feed_discovery",
+                      "article_schema"
+                    ],
+                    "excluded_families": [],
+                    "machine_surfaces_scope": "common-contextual"
+                  },
+                  "overall_score": 42,
+                  "pillar_scores": {
+                    "off_site": 10,
+                    "scrapability": 20,
+                    "seo": 12
+                  },
+                  "pillar_max": {
+                    "off_site": 30,
+                    "scrapability": 40,
+                    "seo": 30
+                  },
+                  "agent_readiness": {
+                    "score": 88,
+                    "earned": 7,
+                    "max": 8,
+                    "label": "Developing agent-native readiness",
+                    "categories": [
+                      {
+                        "name": "Discovery",
+                        "earned": 2,
+                        "max": 5,
+                        "score": 40,
+                        "passed": [
+                          "Public robots.txt present"
+                        ],
+                        "missing": [
+                          "Public llms.txt not found"
+                        ],
+                        "excluded": []
+                      }
+                    ],
+                    "passed": [
+                      "Public robots.txt present"
+                    ],
+                    "missing": [
+                      "Public llms.txt not found"
+                    ],
+                    "not_checked": [],
+                    "benchmark": {
+                      "score": 88,
+                      "earned": 7,
+                      "max": 8,
+                      "benchmark_count": 1,
+                      "median_score": 88,
+                      "percentile": 50,
+                      "position_label": "At median",
+                      "nearest": [
+                        {
+                          "name": "Sample public peer",
+                          "category": "blog",
+                          "group": "small",
+                          "size": "Small",
+                          "url": "https://example.com/",
+                          "overall_score": 58,
+                          "free_evidence_score": 42,
+                          "checked_score": 42,
+                          "checked_max": 56,
+                          "agent_readiness_score": 88,
+                          "agent_readiness_earned": 7,
+                          "agent_readiness_max": 8,
+                          "pillar_scores": {
+                            "off_site": 10,
+                            "scrapability": 20,
+                            "seo": 12
+                          }
+                        }
+                      ],
+                      "entries": [
+                        {
+                          "name": "Sample public peer",
+                          "category": "blog",
+                          "group": "small",
+                          "size": "Small",
+                          "url": "https://example.com/",
+                          "overall_score": 58,
+                          "free_evidence_score": 42,
+                          "checked_score": 42,
+                          "checked_max": 56,
+                          "agent_readiness_score": 88,
+                          "agent_readiness_earned": 7,
+                          "agent_readiness_max": 8,
+                          "pillar_scores": {
+                            "off_site": 10,
+                            "scrapability": 20,
+                            "seo": 12
+                          }
+                        }
+                      ],
+                      "basis": "Public fallback agent-readiness benchmark.",
+                      "snapshot_date": "2026-07-17",
+                      "caveat": "Strict agent-readiness positions are relative context, not exposure proof."
+                    },
+                    "caveat": "Strict agent-readiness measures explicit agent-native signals and does not imply citation share or agent routing."
+                  },
+                  "benchmark": {
+                    "score": 42,
+                    "checked_score": 42,
+                    "checked_max": 56,
+                    "benchmark_count": 1,
+                    "median_score": 42,
+                    "percentile": 50,
+                    "position_label": "At median",
+                    "nearest": [
+                      {
+                        "name": "Sample public peer",
+                        "category": "blog",
+                        "group": "small",
+                        "size": "Small",
+                        "url": "https://example.com/",
+                        "overall_score": 58,
+                        "free_evidence_score": 42,
+                        "checked_score": 42,
+                        "checked_max": 56,
+                        "agent_readiness_score": 88,
+                        "agent_readiness_earned": 7,
+                        "agent_readiness_max": 8,
+                        "pillar_scores": {
+                          "off_site": 10,
+                          "scrapability": 20,
+                          "seo": 12
+                        }
+                      }
+                    ],
+                    "entries": [
+                      {
+                        "name": "Sample public peer",
+                        "category": "blog",
+                        "group": "small",
+                        "size": "Small",
+                        "url": "https://example.com/",
+                        "overall_score": 58,
+                        "free_evidence_score": 42,
+                        "checked_score": 42,
+                        "checked_max": 56,
+                        "agent_readiness_score": 88,
+                        "agent_readiness_earned": 7,
+                        "agent_readiness_max": 8,
+                        "pillar_scores": {
+                          "off_site": 10,
+                          "scrapability": 20,
+                          "seo": 12
+                        }
+                      }
+                    ],
+                    "basis": "Public fallback benchmark (snapshot 2026-07-17, blog preset).",
+                    "snapshot_date": "2026-07-17",
+                    "caveat": "Benchmark positions are relative context among public peers, not exposure proof."
+                  },
+                  "checks": [
+                    {
+                      "pillar": "scrapability",
+                      "check_name": "robots_txt",
+                      "label": "AI Bot Policy Signals",
+                      "state": "partial",
+                      "evidence_level": "verified",
+                      "available_in": "Essentials",
+                      "score": 4,
+                      "max_score": 6,
+                      "finding": "robots.txt mentions GPTBot but does not mention ClaudeBot.",
+                      "fix": "Add an explicit ClaudeBot directive (Allow or Disallow) to robots.txt.",
+                      "effort": "low"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The submitted URL is syntactically valid but resolves to a blocked target (private, loopback, link-local, or reserved address range). Retry with a public HTTP(S) endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                },
+                "example": {
+                  "detail": "URL resolves to a private address. Retry with a public HTTP(S) endpoint."
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request body or URL failed validation. The ``errors`` field carries the structured FastAPI 422 details or preset override failures; ``detail`` carries the human-readable summary.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessage"
+                },
+                "examples": {
+                  "missing_url": {
+                    "summary": "Missing required url field",
+                    "value": {
+                      "detail": "Request body failed validation.",
+                      "errors": [
+                        {
+                          "loc": [
+                            "body",
+                            "url"
+                          ],
+                          "msg": "Field required",
+                          "type": "missing"
+                        }
+                      ]
+                    }
+                  },
+                  "unknown_preset": {
+                    "summary": "Unknown preset identifier",
+                    "value": {
+                      "detail": "Unknown preset 'foo'; valid presets: ['blog', 'corporate', 'custom', 'ecommerce', 'news', 'saas', 'services']",
+                      "errors": [
+                        {
+                          "loc": [
+                            "body",
+                            "preset"
+                          ],
+                          "msg": "Value error, Unknown preset 'foo'",
+                          "type": "value_error"
+                        }
+                      ]
+                    }
+                  },
+                  "preset_override_conflict": {
+                    "summary": "Custom override rejected for preset",
+                    "value": {
+                      "detail": "Override 'api_catalog' is not applicable for preset 'blog'",
+                      "errors": [
+                        {
+                          "loc": [
+                            "body",
+                            "custom_overrides"
+                          ],
+                          "msg": "Override 'api_catalog' is not applicable for preset 'blog'",
+                          "type": "preset_config_incompatible"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded. ``retry_after`` mirrors the ``Retry-After`` and ``X-RateLimit-Reset`` headers.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimitErrorMessage"
+                },
+                "example": {
+                  "detail": "Rate limit exceeded. Retry after the time indicated by Retry-After.",
+                  "retry_after": 60
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/audit/summary": {
+      "post": {
+        "tags": [
+          "Audit"
+        ],
+        "summary": "Run an Essentials audit and return a compact summary",
+        "description": "Run the same canonical Essentials pipeline as `POST /v1/audit`, then return a compact deterministic projection for agent consumption. The summary excludes finding/fix prose, peer entries, raw context, and agent-readiness passed/missing lists. This route shares the audit rate-limit bucket with `/v1/audit` and the deprecated `/audit` alias.",
+        "operationId": "audit_summary_v1_audit_summary_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Audit completed successfully. The body is the compact, agent-oriented AuditSummary projection with scores, benchmark context, check counts, up to five attention rows, and stable limitation codes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditSummary"
+                },
+                "example": {
+                  "api_version": "1.0",
+                  "summary_version": "1.0",
+                  "url": "https://example.com/",
+                  "scope": {
+                    "preset": "blog",
+                    "protocols": false,
+                    "account_auth": false,
+                    "ecommerce": false,
+                    "overrides": {}
+                  },
+                  "scores": {
+                    "overall": {
+                      "earned": 42,
+                      "max": 100
+                    },
+                    "pillars": {
+                      "off_site": {
+                        "earned": 10,
+                        "max": 30
+                      },
+                      "scrapability": {
+                        "earned": 20,
+                        "max": 40
+                      },
+                      "seo": {
+                        "earned": 12,
+                        "max": 30
+                      }
+                    },
+                    "essentials": {
+                      "percent": 42,
+                      "earned": 42,
+                      "max": 56
+                    },
+                    "agent_readiness": {
+                      "percent": 88,
+                      "earned": 7,
+                      "max": 8
+                    }
+                  },
+                  "benchmarks": {
+                    "essentials": {
+                      "percentile": 50,
+                      "median_percent": 42,
+                      "peer_count": 1,
+                      "snapshot": "2026-07-17"
+                    },
+                    "agent_readiness": {
+                      "percentile": 50,
+                      "median_percent": 88,
+                      "peer_count": 1,
+                      "snapshot": "2026-07-17"
+                    }
+                  },
+                  "checks": {
+                    "included": 1,
+                    "locked": 0,
+                    "pass": 0,
+                    "partial": 1,
+                    "fail": 0,
+                    "warn": 0,
+                    "attention_total": 1
+                  },
+                  "attention": [
+                    {
+                      "check_name": "robots_txt",
+                      "pillar": "scrapability",
+                      "state": "partial",
+                      "evidence_level": "verified",
+                      "earned": 4,
+                      "max": 6,
+                      "effort": "low"
+                    }
+                  ],
+                  "limitations": [
+                    "relative_scores",
+                    "no_live_ranking",
+                    "no_provider_ip_auth",
+                    "no_paid_crawlers"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The submitted URL is syntactically valid but resolves to a blocked target (private, loopback, link-local, or reserved address range). Retry with a public HTTP(S) endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                },
+                "example": {
+                  "detail": "URL resolves to a private address. Retry with a public HTTP(S) endpoint."
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request body or URL failed validation. The ``errors`` field carries the structured FastAPI 422 details or preset override failures; ``detail`` carries the human-readable summary.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorMessage"
+                },
+                "examples": {
+                  "missing_url": {
+                    "summary": "Missing required url field",
+                    "value": {
+                      "detail": "Request body failed validation.",
+                      "errors": [
+                        {
+                          "loc": [
+                            "body",
+                            "url"
+                          ],
+                          "msg": "Field required",
+                          "type": "missing"
+                        }
+                      ]
+                    }
+                  },
+                  "unknown_preset": {
+                    "summary": "Unknown preset identifier",
+                    "value": {
+                      "detail": "Unknown preset 'foo'; valid presets: ['blog', 'corporate', 'custom', 'ecommerce', 'news', 'saas', 'services']",
+                      "errors": [
+                        {
+                          "loc": [
+                            "body",
+                            "preset"
+                          ],
+                          "msg": "Value error, Unknown preset 'foo'",
+                          "type": "value_error"
+                        }
+                      ]
+                    }
+                  },
+                  "preset_override_conflict": {
+                    "summary": "Custom override rejected for preset",
+                    "value": {
+                      "detail": "Override 'api_catalog' is not applicable for preset 'blog'",
+                      "errors": [
+                        {
+                          "loc": [
+                            "body",
+                            "custom_overrides"
+                          ],
+                          "msg": "Override 'api_catalog' is not applicable for preset 'blog'",
+                          "type": "preset_config_incompatible"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded. ``retry_after`` mirrors the ``Retry-After`` and ``X-RateLimit-Reset`` headers.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimitErrorMessage"
+                },
+                "example": {
+                  "detail": "Rate limit exceeded. Retry after the time indicated by Retry-After.",
+                  "retry_after": 60
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AgentBenchmarkComparison": {
+        "properties": {
+          "score": {
+            "type": "integer",
+            "title": "Score",
+            "description": "Site's strict agent-readiness score."
+          },
+          "earned": {
+            "type": "integer",
+            "title": "Earned",
+            "description": "Points earned on the strict agent-readiness lens."
+          },
+          "max": {
+            "type": "integer",
+            "title": "Max",
+            "description": "Strict agent-readiness denominator for the resolved scope."
+          },
+          "benchmark_count": {
+            "type": "integer",
+            "title": "Benchmark Count",
+            "description": "Number of public peers considered for the agent benchmark."
+          },
+          "median_score": {
+            "type": "integer",
+            "title": "Median Score",
+            "description": "Median strict agent-readiness score across public peers."
+          },
+          "percentile": {
+            "type": "integer",
+            "title": "Percentile",
+            "description": "Site's percentile rank on the strict agent-readiness lens."
+          },
+          "position_label": {
+            "type": "string",
+            "title": "Position Label",
+            "description": "Human-readable agent-benchmark position label."
+          },
+          "nearest": {
+            "items": {
+              "$ref": "#/components/schemas/BenchmarkEntry"
+            },
+            "type": "array",
+            "title": "Nearest",
+            "description": "Closest peers by strict agent-readiness score."
+          },
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/BenchmarkEntry"
+            },
+            "type": "array",
+            "title": "Entries",
+            "description": "All public peers considered for the agent benchmark."
+          },
+          "basis": {
+            "type": "string",
+            "title": "Basis",
+            "description": "Plain-text basis string for the agent benchmark."
+          },
+          "snapshot_date": {
+            "type": "string",
+            "title": "Snapshot Date",
+            "description": "ISO date the agent-benchmark snapshot was generated."
+          },
+          "caveat": {
+            "type": "string",
+            "title": "Caveat",
+            "description": "Mandatory caveat explaining what the agent benchmark does and does not prove."
+          }
+        },
+        "type": "object",
+        "required": [
+          "score",
+          "earned",
+          "max",
+          "benchmark_count",
+          "median_score",
+          "percentile",
+          "position_label",
+          "nearest",
+          "entries",
+          "basis",
+          "snapshot_date",
+          "caveat"
+        ],
+        "title": "AgentBenchmarkComparison"
+      },
+      "AgentReadinessCategory": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Category name (for example, ``'Discovery'``)."
+          },
+          "earned": {
+            "type": "integer",
+            "title": "Earned",
+            "description": "Points earned in this category."
+          },
+          "max": {
+            "type": "integer",
+            "title": "Max",
+            "description": "Maximum points for this category."
+          },
+          "score": {
+            "type": "integer",
+            "title": "Score",
+            "description": "Category percentage score (0-100)."
+          },
+          "passed": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Passed",
+            "description": "Public signals that this category verified on the site."
+          },
+          "missing": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing",
+            "description": "Public signals this category looked for and did not find."
+          },
+          "excluded": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Excluded",
+            "description": "Surfaces excluded by the active scope/preset. Listed for transparency; they do not affect the category score."
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "earned",
+          "max",
+          "score",
+          "passed",
+          "missing",
+          "excluded"
+        ],
+        "title": "AgentReadinessCategory"
+      },
+      "AgentReadinessSummary": {
+        "properties": {
+          "score": {
+            "type": "integer",
+            "title": "Score",
+            "description": "Strict agent-readiness percentage score (0-100). Measures explicit agent-native discovery and protocol signals; stricter than general crawlability or SEO."
+          },
+          "earned": {
+            "type": "integer",
+            "title": "Earned",
+            "description": "Points earned on the strict agent-readiness lens."
+          },
+          "max": {
+            "type": "integer",
+            "title": "Max",
+            "description": "Strict agent-readiness denominator for the resolved scope."
+          },
+          "label": {
+            "type": "string",
+            "title": "Label",
+            "description": "Human-readable label for the strict agent-readiness score.",
+            "examples": [
+              "Strong agent-native readiness",
+              "Developing agent-native readiness",
+              "Limited agent-native readiness",
+              "Agent-native unavailable"
+            ]
+          },
+          "categories": {
+            "items": {
+              "$ref": "#/components/schemas/AgentReadinessCategory"
+            },
+            "type": "array",
+            "title": "Categories",
+            "description": "Per-category breakdown of the strict agent-readiness score."
+          },
+          "passed": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Passed",
+            "description": "All agent-native signals verified on the site."
+          },
+          "missing": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing",
+            "description": "All agent-native signals the audit looked for and did not find."
+          },
+          "not_checked": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Not Checked",
+            "description": "Agent-native surfaces the audit deliberately did not check, for example when an individual probe failed and produced an inconclusive warning instead of verified evidence."
+          },
+          "benchmark": {
+            "$ref": "#/components/schemas/AgentBenchmarkComparison",
+            "description": "Peer comparison on the strict agent-readiness lens."
+          },
+          "caveat": {
+            "type": "string",
+            "title": "Caveat",
+            "description": "Mandatory caveat explaining what the strict agent-readiness score does and does not prove."
+          }
+        },
+        "type": "object",
+        "required": [
+          "score",
+          "earned",
+          "max",
+          "label",
+          "categories",
+          "passed",
+          "missing",
+          "not_checked",
+          "benchmark",
+          "caveat"
+        ],
+        "title": "AgentReadinessSummary"
+      },
+      "AuditRequest": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "Public HTTP(S) URL to audit. The scheme is added automatically if missing (defaults to https). Private, loopback, link-local, and reserved address ranges are rejected before the audit starts.",
+            "examples": [
+              "https://example.com/"
+            ]
+          },
+          "include_protocols": {
+            "type": "boolean",
+            "title": "Include Protocols",
+            "description": "Legacy scope toggle. When ``preset`` is set this field is ignored; when ``preset`` is None, this controls whether protocol/API surfaces (MCP, A2A, Agent Skills, WebMCP, API catalog) are scored. Prefer the preset-based path for new integrations; this field is preserved for backward compatibility and remains part of the public contract.",
+            "default": false,
+            "deprecated": true
+          },
+          "include_account_auth": {
+            "type": "boolean",
+            "title": "Include Account Auth",
+            "description": "Legacy scope toggle. When ``preset`` is set this field is ignored; when ``preset`` is None, this controls whether account/auth surfaces (OAuth/OIDC discovery, auth.md) are scored. Prefer the preset-based path for new integrations; this field is preserved for backward compatibility and remains part of the public contract.",
+            "default": false,
+            "deprecated": true
+          },
+          "include_ecommerce": {
+            "type": "boolean",
+            "title": "Include Ecommerce",
+            "description": "Legacy scope toggle. When ``preset`` is set this field is ignored; when ``preset`` is None, this controls whether commerce surfaces (Product/Offer JSON-LD, price/availability, checkout-protocol metadata) are scored. Prefer the preset-based path for new integrations; this field is preserved for backward compatibility and remains part of the public contract.",
+            "default": false,
+            "deprecated": true
+          },
+          "preset": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "blog",
+                  "corporate",
+                  "services",
+                  "ecommerce",
+                  "news",
+                  "saas",
+                  "custom"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preset",
+            "description": "QA5-03 preset identifier. When set, the preset wins over the three legacy include_* booleans. When None, the booleans are honored verbatim and custom_overrides must be empty. Supported values: 'blog', 'corporate', 'services', 'ecommerce', 'news', 'saas', 'custom'.",
+            "examples": [
+              "blog",
+              "saas",
+              null
+            ]
+          },
+          "custom_overrides": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "boolean"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Custom Overrides",
+            "description": "QA5-03 Custom/Power User overrides applied on top of the selected preset. Requires preset='custom' or another preset to be set; rejected when preset is None. Supported keys: 'protocols', 'account_auth', 'ecommerce', 'feed_discovery', 'article_schema', 'localbusiness_schema', 'news_article_schema', 'claimreview_schema', 'product_offer_schema', 'commerce_fields', 'api_catalog', 'mcp', 'a2a', 'agent_skills', 'webmcp', 'oauth_oidc', 'ard_catalog', 'auth_md'.",
+            "examples": [
+              null,
+              {
+                "api_catalog": true,
+                "feed_discovery": true
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "title": "AuditRequest",
+        "examples": [
+          {
+            "url": "https://example.com/"
+          },
+          {
+            "preset": "blog",
+            "url": "https://example.com/"
+          }
+        ]
+      },
+      "AuditResult": {
+        "properties": {
+          "api_version": {
+            "type": "string",
+            "title": "Api Version",
+            "description": "MachineRead API contract version that produced this response. Add-only: the field value is bumped when the contract changes in a breaking way. Agents should treat unknown api_version values as forward-compatible and ignore unknown fields rather than reject the response.",
+            "default": "1.0",
+            "examples": [
+              "1.0"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "Final audited URL after normalization. Always starts with ``https://`` (or ``http://`` when the user explicitly opted into plain HTTP) and ends with a trailing slash."
+          },
+          "scope": {
+            "$ref": "#/components/schemas/AuditScope",
+            "description": "Resolved audit scope (see AuditScope)."
+          },
+          "overall_score": {
+            "type": "integer",
+            "title": "Overall Score",
+            "description": "Full-rubric score on a 100-point scale. Includes locked advanced rows (score 0 until verified) and capped at the active pillar maxima."
+          },
+          "pillar_scores": {
+            "$ref": "#/components/schemas/PillarScores",
+            "description": "Per-pillar earned points."
+          },
+          "pillar_max": {
+            "$ref": "#/components/schemas/PillarMax",
+            "description": "Per-pillar maximum under the resolved scope."
+          },
+          "agent_readiness": {
+            "$ref": "#/components/schemas/AgentReadinessSummary",
+            "description": "Strict agent-native readiness summary. Stricter than the general scrapability pillar; measures explicit agent-protocol discovery and signal verification."
+          },
+          "benchmark": {
+            "$ref": "#/components/schemas/BenchmarkComparison",
+            "description": "Public peer comparison on the Essentials evidence score. Private production benchmark profiles are never exposed; only public-safe snapshot entries are returned."
+          },
+          "checks": {
+            "items": {
+              "$ref": "#/components/schemas/CheckResult"
+            },
+            "type": "array",
+            "title": "Checks",
+            "description": "Per-check group results. Length is 13 for a default Essentials audit; locked advanced rows are appended at the bottom with ``state='locked'``."
+          }
+        },
+        "type": "object",
+        "required": [
+          "url",
+          "scope",
+          "overall_score",
+          "pillar_scores",
+          "pillar_max",
+          "agent_readiness",
+          "benchmark",
+          "checks"
+        ],
+        "title": "AuditResult"
+      },
+      "AuditScope": {
+        "properties": {
+          "include_protocols": {
+            "type": "boolean",
+            "title": "Include Protocols",
+            "description": "Resolved protocol/API scope for this audit. ``True`` when protocol families (API catalog, MCP, A2A, Agent Skills, WebMCP) are scored; derived from the preset when one is applied."
+          },
+          "include_account_auth": {
+            "type": "boolean",
+            "title": "Include Account Auth",
+            "description": "Resolved account/auth scope. ``True`` when OAuth/OIDC or auth.md surfaces are scored."
+          },
+          "include_ecommerce": {
+            "type": "boolean",
+            "title": "Include Ecommerce",
+            "description": "Resolved commerce scope. ``True`` when Product/Offer JSON-LD, price/availability, and commerce-protocol metadata are scored."
+          },
+          "label": {
+            "type": "string",
+            "title": "Label",
+            "description": "Human-readable label for the resolved scope, suitable for displaying next to the score. For preset audits this is the preset label (for example ``'Blog/Content audit'``); for legacy boolean audits this is the legacy ``General website + extras`` string.",
+            "examples": [
+              "Blog/Content audit"
+            ]
+          },
+          "included_optional_surfaces": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Included Optional Surfaces",
+            "description": "Optional surfaces (protocol, account/auth, commerce) that were enabled for this audit. Empty when only the universal core is scored."
+          },
+          "excluded_optional_surfaces": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Excluded Optional Surfaces",
+            "description": "Optional surfaces that were deliberately excluded by the preset/legacy booleans. The audit never penalises a site for excluded surfaces."
+          },
+          "preset_applied": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preset Applied",
+            "description": "QA5-03 preset identifier that won scope resolution for this audit, or ``null`` when the legacy boolean path was used.",
+            "examples": [
+              null,
+              "blog",
+              "saas"
+            ]
+          },
+          "overrides_applied": {
+            "additionalProperties": {
+              "type": "boolean"
+            },
+            "type": "object",
+            "title": "Overrides Applied",
+            "description": "Custom/Power User override keys that the audit actually applied on top of the preset defaults. Empty for legacy audits."
+          },
+          "included_families": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Included Families",
+            "description": "Sub-signal families that were enabled for this audit after preset + override resolution. Universal-core families are not listed here."
+          },
+          "excluded_families": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Excluded Families",
+            "description": "Sub-signal families that were explicitly disabled for this audit (by preset, override, or universal exclusion)."
+          },
+          "machine_surfaces_scope": {
+            "type": "string",
+            "enum": [
+              "common-contextual",
+              "full"
+            ],
+            "title": "Machine Surfaces Scope",
+            "description": "Agent Protocol Discovery depth. ``common-contextual`` is the default bounded probe; ``full`` is selected by presets that explicitly opt into the complete protocol surface set.",
+            "default": "common-contextual",
+            "examples": [
+              "common-contextual",
+              "full"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "include_protocols",
+          "include_account_auth",
+          "include_ecommerce",
+          "label",
+          "included_optional_surfaces",
+          "excluded_optional_surfaces"
+        ],
+        "title": "AuditScope"
+      },
+      "AuditSummary": {
+        "properties": {
+          "api_version": {
+            "type": "string",
+            "const": "1.0",
+            "title": "Api Version",
+            "description": "MachineRead API contract version that produced this response. Same semantics as ``AuditResult.api_version``."
+          },
+          "summary_version": {
+            "type": "string",
+            "const": "1.0",
+            "title": "Summary Version",
+            "description": "Summary contract version. Bumped when ``AuditSummary`` adds or renames a field in a breaking way."
+          },
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "Final audited URL after normalization."
+          },
+          "scope": {
+            "$ref": "#/components/schemas/SummaryScope",
+            "description": "Resolved audit scope (compact form)."
+          },
+          "scores": {
+            "$ref": "#/components/schemas/SummaryScores",
+            "description": "Compact scoring surface."
+          },
+          "benchmarks": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SummaryBenchmark"
+            },
+            "type": "object",
+            "title": "Benchmarks",
+            "description": "Compact benchmark comparison. Always carries the keys ``essentials`` and ``agent_readiness``."
+          },
+          "checks": {
+            "$ref": "#/components/schemas/SummaryCheckCounts",
+            "description": "Compact check row counts."
+          },
+          "attention": {
+            "items": {
+              "$ref": "#/components/schemas/SummaryAttentionItem"
+            },
+            "type": "array",
+            "title": "Attention",
+            "description": "Up to 5 most-urgent attention rows, sorted by severity then ratio then check name. Empty when every included row passes."
+          },
+          "limitations": {
+            "prefixItems": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "type": "array",
+            "maxItems": 4,
+            "minItems": 4,
+            "title": "Limitations",
+            "description": "Fixed ordered tuple of limitation codes that always appear in the 200 payload: ``relative_scores``, ``no_live_ranking``, ``no_provider_ip_auth``, ``no_paid_crawlers``."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "api_version",
+          "summary_version",
+          "url",
+          "scope",
+          "scores",
+          "benchmarks",
+          "checks",
+          "attention",
+          "limitations"
+        ],
+        "title": "AuditSummary"
+      },
+      "BenchmarkComparison": {
+        "properties": {
+          "score": {
+            "type": "integer",
+            "title": "Score",
+            "description": "The site's free-evidence score (Essentials evidence only, no locked rows). This is the score used for peer comparison."
+          },
+          "checked_score": {
+            "type": "integer",
+            "title": "Checked Score",
+            "description": "Checked score earned by the site on this audit."
+          },
+          "checked_max": {
+            "type": "integer",
+            "title": "Checked Max",
+            "description": "Checked denominator for the resolved scope of this audit."
+          },
+          "benchmark_count": {
+            "type": "integer",
+            "title": "Benchmark Count",
+            "description": "Number of public benchmark peers considered."
+          },
+          "median_score": {
+            "type": "integer",
+            "title": "Median Score",
+            "description": "Median free-evidence score across public benchmark peers."
+          },
+          "percentile": {
+            "type": "integer",
+            "title": "Percentile",
+            "description": "Site's percentile rank against public peers (0-100). 100 means the site scored at or above every peer; 0 means it scored at or below every peer."
+          },
+          "position_label": {
+            "type": "string",
+            "title": "Position Label",
+            "description": "Human-readable position label (for example, ``'Above median'`` or ``'Below median'``). Always paired with the numeric percentile; never the only signal.",
+            "examples": [
+              "Above median",
+              "At median",
+              "Below median"
+            ]
+          },
+          "nearest": {
+            "items": {
+              "$ref": "#/components/schemas/BenchmarkEntry"
+            },
+            "type": "array",
+            "title": "Nearest",
+            "description": "Closest peers by free-evidence score, used for explainable comparison. Empty when no peers are available."
+          },
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/BenchmarkEntry"
+            },
+            "type": "array",
+            "title": "Entries",
+            "description": "All public peers considered for this comparison. Empty when no public profiles are loaded; private production profiles are never exposed through this field."
+          },
+          "basis": {
+            "type": "string",
+            "title": "Basis",
+            "description": "Plain-text description of how the benchmark was computed (profile source, denominator, scope filter). Always includes the public/private source distinction."
+          },
+          "snapshot_date": {
+            "type": "string",
+            "title": "Snapshot Date",
+            "description": "ISO date the benchmark snapshot was generated. Benchmark profiles are refreshed when scoring, options, or applicability rules change.",
+            "examples": [
+              "2026-07-17"
+            ]
+          },
+          "caveat": {
+            "type": "string",
+            "title": "Caveat",
+            "description": "Mandatory caveat explaining what the benchmark does and does not prove. Agents should surface this text alongside any percentile or comparison claim."
+          }
+        },
+        "type": "object",
+        "required": [
+          "score",
+          "checked_score",
+          "checked_max",
+          "benchmark_count",
+          "median_score",
+          "percentile",
+          "position_label",
+          "nearest",
+          "entries",
+          "basis",
+          "snapshot_date",
+          "caveat"
+        ],
+        "title": "BenchmarkComparison"
+      },
+      "BenchmarkEntry": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Display name for the benchmark peer."
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "Peer category bucket used by the benchmark profile generator (for example, ``'blog'``, ``'saas'``, ``'ecommerce'``)."
+          },
+          "group": {
+            "type": "string",
+            "title": "Group",
+            "description": "Peer size/cohort group (``'small'``, ``'medium'``, ``'large'``) used for percentile grouping."
+          },
+          "size": {
+            "type": "string",
+            "title": "Size",
+            "description": "Human-readable size label for the peer."
+          },
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "Public benchmark peer URL. Safe to surface in dashboards; no private benchmarks are exposed through this field."
+          },
+          "overall_score": {
+            "type": "integer",
+            "title": "Overall Score",
+            "description": "Peer overall score at snapshot time."
+          },
+          "free_evidence_score": {
+            "type": "integer",
+            "title": "Free Evidence Score",
+            "description": "Peer free-evidence score at snapshot time."
+          },
+          "checked_score": {
+            "type": "integer",
+            "title": "Checked Score",
+            "description": "Peer checked-score at snapshot time."
+          },
+          "checked_max": {
+            "type": "integer",
+            "title": "Checked Max",
+            "description": "Peer checked denominator at snapshot time."
+          },
+          "agent_readiness_score": {
+            "type": "integer",
+            "title": "Agent Readiness Score",
+            "description": "Peer strict agent-readiness score at snapshot time."
+          },
+          "agent_readiness_earned": {
+            "type": "integer",
+            "title": "Agent Readiness Earned",
+            "description": "Peer strict agent-readiness earned points."
+          },
+          "agent_readiness_max": {
+            "type": "integer",
+            "title": "Agent Readiness Max",
+            "description": "Peer strict agent-readiness denominator."
+          },
+          "pillar_scores": {
+            "$ref": "#/components/schemas/PillarScores",
+            "description": "Peer pillar scores at snapshot time."
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "category",
+          "group",
+          "size",
+          "url",
+          "overall_score",
+          "free_evidence_score",
+          "checked_score",
+          "checked_max",
+          "agent_readiness_score",
+          "agent_readiness_earned",
+          "agent_readiness_max",
+          "pillar_scores"
+        ],
+        "title": "BenchmarkEntry"
+      },
+      "CheckResult": {
+        "properties": {
+          "pillar": {
+            "type": "string",
+            "enum": [
+              "off_site",
+              "scrapability",
+              "seo"
+            ],
+            "title": "Pillar",
+            "description": "Pillar this row contributes to. ``off_site`` covers off-site presence and entity metadata; ``scrapability`` covers AI crawler access, structured data, and machine-readable surfaces; ``seo`` covers traditional search discovery signals.",
+            "examples": [
+              "scrapability"
+            ]
+          },
+          "check_name": {
+            "type": "string",
+            "title": "Check Name",
+            "description": "Stable machine identifier for the check group. Use this key rather than ``label`` for downstream filtering; ``label`` is human-readable and may change without a contract bump.",
+            "examples": [
+              "robots_txt",
+              "schema_ld",
+              "llms_txt"
+            ]
+          },
+          "label": {
+            "type": "string",
+            "title": "Label",
+            "description": "Human-readable title for the check group, suitable for displaying in dashboards.",
+            "examples": [
+              "AI Bot Policy Signals"
+            ]
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "partial",
+              "fail",
+              "warn",
+              "locked"
+            ],
+            "title": "State",
+            "description": "Outcome state. ``pass`` and ``partial`` mean the row scored evidence on the live site; ``fail`` means the row ran and the site did not satisfy it; ``warn`` means the row is inconclusive (check failed to complete or returned no signal); ``locked`` means the row is reserved for a paid tier and is not scored in Essentials.",
+            "examples": [
+              "partial"
+            ]
+          },
+          "evidence_level": {
+            "type": "string",
+            "enum": [
+              "verified",
+              "inferred",
+              "unknown",
+              "not_applicable"
+            ],
+            "title": "Evidence Level",
+            "description": "How strong the evidence behind this row is. ``verified`` means the live public response was inspected; ``inferred`` means the row used deterministic heuristics or metadata; ``unknown`` means the row could not be evaluated; ``not_applicable`` means the row was excluded by the active scope/preset.",
+            "default": "verified",
+            "examples": [
+              "verified"
+            ]
+          },
+          "available_in": {
+            "type": "string",
+            "title": "Available In",
+            "description": "Tier or surface where this row is fully evaluated. ``Essentials`` means the row is scored in the free audit; ``Starter`` and ``Pro`` mean the row is locked advanced coverage and not scored in Essentials.",
+            "default": "Essentials",
+            "examples": [
+              "Essentials",
+              "Starter",
+              "Pro"
+            ]
+          },
+          "score": {
+            "type": "integer",
+            "title": "Score",
+            "description": "Points earned on this row. Sum of all included row scores is the per-pillar score; overall score is the sum across the three pillars, capped at the rubric (100 points total).",
+            "examples": [
+              3
+            ]
+          },
+          "max_score": {
+            "type": "integer",
+            "title": "Max Score",
+            "description": "Maximum points this row can earn when the active scope includes every surface the row checks. The checked denominator across all Essentials rows is 56 by default and grows when scope toggles add protocol, account/auth, or commerce surfaces.",
+            "examples": [
+              6
+            ]
+          },
+          "finding": {
+            "type": "string",
+            "title": "Finding",
+            "description": "Public-facing explanation of what was observed. Safe to surface directly in dashboards; never contains internal infrastructure detail or fetched response bodies.",
+            "examples": [
+              "The robots.txt file does not mention the GPTBot user-agent."
+            ]
+          },
+          "fix": {
+            "type": "string",
+            "title": "Fix",
+            "description": "Public-facing remediation hint tied to this finding. The hint is deterministic and never presumes access to internal tooling.",
+            "examples": [
+              "Add an explicit GPTBot directive (Allow or Disallow) to robots.txt."
+            ]
+          },
+          "effort": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "title": "Effort",
+            "description": "Estimated effort to apply the suggested fix. ``low`` is a single-file config edit; ``medium`` is a small code or template change; ``high`` is a structural site change.",
+            "examples": [
+              "low"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "pillar",
+          "check_name",
+          "label",
+          "state",
+          "score",
+          "max_score",
+          "finding",
+          "fix",
+          "effort"
+        ],
+        "title": "CheckResult",
+        "description": "One row of the public audit report.\n\nA row corresponds to a check group (for example ``robots_txt`` or\n``schema_ld``) that may bundle several underlying sub-signals. Rows that\nare not yet scored are returned with ``state='warn'`` and\n``evidence_level='unknown'`` rather than being omitted from the response."
+      },
+      "ErrorMessage": {
+        "properties": {
+          "detail": {
+            "type": "string",
+            "title": "Detail",
+            "description": "Human-readable explanation of why the request was rejected.",
+            "examples": [
+              "URL resolves to a private address. Retry with a public HTTP(S) endpoint."
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "detail"
+        ],
+        "title": "ErrorMessage"
+      },
+      "PillarMax": {
+        "properties": {
+          "off_site": {
+            "type": "integer",
+            "title": "Off Site",
+            "description": "Maximum off-site pillar score possible under the resolved scope."
+          },
+          "scrapability": {
+            "type": "integer",
+            "title": "Scrapability",
+            "description": "Maximum AI access pillar score possible under the resolved scope."
+          },
+          "seo": {
+            "type": "integer",
+            "title": "Seo",
+            "description": "Maximum SEO pillar score possible under the resolved scope."
+          }
+        },
+        "type": "object",
+        "required": [
+          "off_site",
+          "scrapability",
+          "seo"
+        ],
+        "title": "PillarMax"
+      },
+      "PillarScores": {
+        "properties": {
+          "off_site": {
+            "type": "integer",
+            "title": "Off Site",
+            "description": "Points earned on the off-site pillar (0-30)."
+          },
+          "scrapability": {
+            "type": "integer",
+            "title": "Scrapability",
+            "description": "Points earned on the AI access / scrapability pillar (0-40)."
+          },
+          "seo": {
+            "type": "integer",
+            "title": "Seo",
+            "description": "Points earned on the SEO pillar (0-30)."
+          }
+        },
+        "type": "object",
+        "required": [
+          "off_site",
+          "scrapability",
+          "seo"
+        ],
+        "title": "PillarScores"
+      },
+      "RateLimitErrorMessage": {
+        "properties": {
+          "detail": {
+            "type": "string",
+            "title": "Detail",
+            "description": "Human-readable explanation that the request was rate-limited.",
+            "examples": [
+              "Rate limit exceeded. Retry after the time indicated by Retry-After."
+            ]
+          },
+          "retry_after": {
+            "type": "integer",
+            "title": "Retry After",
+            "description": "Whole seconds the client should wait before retrying. Mirrors the `Retry-After` response header and the `X-RateLimit-Reset` value.",
+            "examples": [
+              42
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "detail",
+          "retry_after"
+        ],
+        "title": "RateLimitErrorMessage"
+      },
+      "SummaryAttentionItem": {
+        "properties": {
+          "check_name": {
+            "type": "string",
+            "enum": [
+              "robots_txt",
+              "bot_access",
+              "html_structure",
+              "schema_ld",
+              "llms_txt",
+              "ssr",
+              "machine_surfaces",
+              "pagespeed",
+              "canonical",
+              "indexing",
+              "search_discovery",
+              "social",
+              "wikipedia"
+            ],
+            "title": "Check Name",
+            "description": "Stable machine identifier for the check group."
+          },
+          "pillar": {
+            "type": "string",
+            "enum": [
+              "off_site",
+              "scrapability",
+              "seo"
+            ],
+            "title": "Pillar",
+            "description": "Pillar the row contributes to."
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "fail",
+              "partial",
+              "warn"
+            ],
+            "title": "State",
+            "description": "Attention state of the row."
+          },
+          "evidence_level": {
+            "type": "string",
+            "enum": [
+              "verified",
+              "inferred",
+              "sampled",
+              "unavailable"
+            ],
+            "title": "Evidence Level",
+            "description": "Evidence maturity for the row."
+          },
+          "earned": {
+            "type": "integer",
+            "title": "Earned",
+            "description": "Points earned on the row."
+          },
+          "max": {
+            "type": "integer",
+            "title": "Max",
+            "description": "Maximum points possible on the row."
+          },
+          "effort": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "title": "Effort",
+            "description": "Estimated remediation effort."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "check_name",
+          "pillar",
+          "state",
+          "evidence_level",
+          "earned",
+          "max",
+          "effort"
+        ],
+        "title": "SummaryAttentionItem"
+      },
+      "SummaryBenchmark": {
+        "properties": {
+          "percentile": {
+            "type": "integer",
+            "title": "Percentile",
+            "description": "Site percentile rank against public peers (0-100)."
+          },
+          "median_percent": {
+            "type": "integer",
+            "title": "Median Percent",
+            "description": "Median peer score (percent) the benchmark comparison used. The source field ``BenchmarkComparison.median_score`` is renamed to ``median_percent`` to make the unit explicit in the agent surface."
+          },
+          "peer_count": {
+            "type": "integer",
+            "title": "Peer Count",
+            "description": "Number of public benchmark peers considered."
+          },
+          "snapshot": {
+            "type": "string",
+            "title": "Snapshot",
+            "description": "ISO date the benchmark snapshot was generated. Benchmark profiles are refreshed when scoring, options, or applicability rules change."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "percentile",
+          "median_percent",
+          "peer_count",
+          "snapshot"
+        ],
+        "title": "SummaryBenchmark"
+      },
+      "SummaryCheckCounts": {
+        "properties": {
+          "included": {
+            "type": "integer",
+            "title": "Included",
+            "description": "Count of non-locked Essentials check rows (13)."
+          },
+          "locked": {
+            "type": "integer",
+            "title": "Locked",
+            "description": "Count of locked advanced rows (9)."
+          },
+          "pass": {
+            "type": "integer",
+            "title": "Pass",
+            "description": "Number of included rows with state ``pass``."
+          },
+          "partial": {
+            "type": "integer",
+            "title": "Partial",
+            "description": "Number of included rows with state ``partial``."
+          },
+          "fail": {
+            "type": "integer",
+            "title": "Fail",
+            "description": "Number of included rows with state ``fail``."
+          },
+          "warn": {
+            "type": "integer",
+            "title": "Warn",
+            "description": "Number of included rows with state ``warn``."
+          },
+          "attention_total": {
+            "type": "integer",
+            "title": "Attention Total",
+            "description": "Count of items in the ``attention`` array after the 5-row cap. This matches the actual returned count rather than the pre-cap candidate count so the field never disagrees with the array length."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "included",
+          "locked",
+          "pass",
+          "partial",
+          "fail",
+          "warn",
+          "attention_total"
+        ],
+        "title": "SummaryCheckCounts"
+      },
+      "SummaryPercent": {
+        "properties": {
+          "percent": {
+            "type": "integer",
+            "title": "Percent",
+            "description": "Percentage score for the associated scope (0-100)."
+          },
+          "earned": {
+            "type": "integer",
+            "title": "Earned",
+            "description": "Points earned on the associated scope."
+          },
+          "max": {
+            "type": "integer",
+            "title": "Max",
+            "description": "Maximum points possible on the associated scope."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "percent",
+          "earned",
+          "max"
+        ],
+        "title": "SummaryPercent"
+      },
+      "SummaryScope": {
+        "properties": {
+          "preset": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preset",
+            "description": "Preset identifier that won scope resolution for this audit, or ``null`` when the legacy boolean path was used.",
+            "examples": [
+              null,
+              "blog",
+              "saas"
+            ]
+          },
+          "protocols": {
+            "type": "boolean",
+            "title": "Protocols",
+            "description": "Resolved protocol/API scope for the audit. ``True`` when the active scope scores protocol-family surfaces."
+          },
+          "account_auth": {
+            "type": "boolean",
+            "title": "Account Auth",
+            "description": "Resolved account/auth scope for the audit. ``True`` when the active scope scores account/auth surfaces."
+          },
+          "ecommerce": {
+            "type": "boolean",
+            "title": "Ecommerce",
+            "description": "Resolved commerce scope for the audit. ``True`` when the active scope scores commerce surfaces."
+          },
+          "overrides": {
+            "additionalProperties": {
+              "type": "boolean"
+            },
+            "type": "object",
+            "title": "Overrides",
+            "description": "Custom/Power User override keys the audit applied on top of the preset defaults. Empty when the legacy boolean path was used."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "preset",
+          "protocols",
+          "account_auth",
+          "ecommerce"
+        ],
+        "title": "SummaryScope"
+      },
+      "SummaryScorePair": {
+        "properties": {
+          "earned": {
+            "type": "integer",
+            "title": "Earned",
+            "description": "Points earned on the associated scope."
+          },
+          "max": {
+            "type": "integer",
+            "title": "Max",
+            "description": "Maximum points possible on the associated scope."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "earned",
+          "max"
+        ],
+        "title": "SummaryScorePair"
+      },
+      "SummaryScores": {
+        "properties": {
+          "overall": {
+            "$ref": "#/components/schemas/SummaryScorePair",
+            "description": "Full-rubric overall score. ``max`` is the sum of pillar caps (100) regardless of the active scope."
+          },
+          "pillars": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SummaryScorePair"
+            },
+            "type": "object",
+            "title": "Pillars",
+            "description": "Per-pillar earned and max points. Keys are always ``off_site``, ``scrapability``, and ``seo``."
+          },
+          "essentials": {
+            "$ref": "#/components/schemas/SummaryPercent",
+            "description": "Essentials evidence score (peer comparison source). ``percent`` mirrors ``AuditResult.benchmark.score``; ``earned`` and ``max`` are the source ``checked_score`` and ``checked_max``."
+          },
+          "agent_readiness": {
+            "$ref": "#/components/schemas/SummaryPercent",
+            "description": "Strict agent-readiness score. ``percent`` mirrors ``AuditResult.agent_readiness.score``; ``earned`` and ``max`` are the source ``earned`` and ``max``."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "overall",
+          "pillars",
+          "essentials",
+          "agent_readiness"
+        ],
+        "title": "SummaryScores"
+      },
+      "ValidationErrorMessage": {
+        "properties": {
+          "detail": {
+            "type": "string",
+            "title": "Detail",
+            "description": "Human-readable explanation of the validation failure.",
+            "examples": [
+              "Request body failed validation: url is required."
+            ]
+          },
+          "errors": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Errors",
+            "description": "Structured per-field or per-rule error descriptors. FastAPI's default 422 response uses a list of `{loc, msg, type}` items; preset override failures expose the offending keys and reasons.",
+            "examples": [
+              []
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "detail"
+        ],
+        "title": "ValidationErrorMessage"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Audit",
+      "description": "Run the free MachineRead Essentials audit against a public HTTP(S) URL and retrieve the public contract (overall score, pillar scores, benchmark comparison, strict agent-readiness summary, and per-check group evidence). Rate-limited per client IP; the rate-limit guidance is returned on every response via the X-RateLimit-* headers and Retry-After (on 429)."
+    },
+    {
+      "name": "System",
+      "description": "Operational endpoints used by uptime monitors and orchestration tooling. Does not require authentication and does not surface customer data."
+    }
+  ],
+  "externalDocs": {
+    "description": "MachineRead product docs, methodology, and caveats (reserved future production URL; not yet live. The canonical source for product documentation is this public repository under docs/api/.)",
+    "url": "https://machineread.ai/docs"
+  }
+}

@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+backend/.cache/
+backend/data/
+data/
+*.sqlite
+*.sqlite3
+*.db
+*.jsonl
+test_results.txt
+.env
+.env.local
+.env.*.local
+
+# Node
+node_modules/
+.next/
+.vercel/
+*.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Generated reports
+reports/

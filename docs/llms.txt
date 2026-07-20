@@ -1,0 +1,38 @@
+# MachineRead
+
+## Overview
+
+MachineRead is a public-readiness audit for institutional websites. It checks a public HTTP(S) URL for AI visibility, agent accessibility, scrapability, and search-discovery readiness using bounded HTTP, DNS, HTML, metadata, structured-data, robots, sitemap, Markdown, and machine-surface evidence.
+
+The free Essentials audit returns structured, deterministic findings for 13 included check groups and a 56-point checked maximum. It also reports a separate strict agent-readiness score, benchmark context, scope metadata, caveats, and locked advanced rows. Essentials uses public site responses and a cached public Wikimedia lookup; it does not require paid search, backlink, social, crawler, or LLM APIs.
+
+MachineRead reports observable public signals. It does not prove search ranking, traffic, backlinks, social traction, field Core Web Vitals, model citation share, conversion performance, live search index coverage, provider crawler treatment, browser-rendered extraction, or extraction fidelity.
+
+## API
+
+- [`POST /v1/audit`](/v1/audit): Run an Essentials audit for one public HTTP(S) URL. The request may select a website preset or the legacy protocol, account/auth, and ecommerce scope options.
+- [`POST /v1/audit/summary`](/v1/audit/summary): Run the same canonical audit pipeline and return a compact deterministic `AuditSummary` for agents. It preserves scores, denominators, benchmark context, check counts, up to five attention rows, and fixed limitation codes while omitting full finding/fix prose, peer entries, raw context, and LLM-generated text.
+- [`OpenAPI schema`](/openapi.json): Machine-readable request, response, error, rate-limit, preset, and scoring-contract reference.
+- [`API reference`](api/index.md): Human-readable API contract reference.
+- Public production API hostname: `https://api.machineread.ai` (reserved future domain; not yet live — when the production deployment ships, this is the canonical hostname).
+- Use `/v1/audit` when full per-check evidence is needed and `/v1/audit/summary` when compact structured context is sufficient. The unversioned `/audit` route is a deprecated runtime compatibility alias and is intentionally omitted from the public OpenAPI schema. All three audit routes share one per-client-IP rate-limit bucket.
+
+## Optional (reserved future production URLs — not yet live)
+
+The `machineread.ai` domain is reserved for the production deployment. Until it goes live, the canonical source for every artifact below is this public repository under `docs/`.
+
+- API catalog (linkset): https://machineread.ai/.well-known/api-catalog
+- ARD ai-catalog: https://machineread.ai/.well-known/ai-catalog.json
+- MCP discovery: https://machineread.ai/docs/api/mcp.md
+  (MCP Server Card: https://machineread.ai/.well-known/mcp/server-card.json)
+- Agent Skill package: https://github.com/georgejieh/MachineRead-Preview
+  (skill: machineread-audit)
+
+## Crawler Policy
+
+- Treat this file as a static product description and discovery index, not as a per-audit report. It contains no customer submissions, audit history, private benchmark data, credentials, prompts, or LLM-generated report content.
+- Prefer the versioned OpenAPI-described API and honor `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`, and `Retry-After` response guidance.
+- Submit only public HTTP(S) URLs that you are authorized to audit. MachineRead rejects private, loopback, link-local, unique-local, and other reserved targets before fetching.
+- Keep requests bounded and do not treat MachineRead as an unbounded crawler. The audit uses bounded fetches, redirect limits, timeouts, and sampled public pages.
+- This file does not replace `robots.txt`, `Content-Signal`, or other site-owner crawler directives on the website being audited. Do not interpret a site's presence or absence of `llms.txt` as proof of search ranking or model inclusion.
+- Do not claim that an Essentials result verifies a live search engine, AI provider, or crawler's treatment of a site. User-agent probes originate from MachineRead and do not authenticate provider IPs.

@@ -1,0 +1,29 @@
+{
+  "specVersion": "0.9.0",
+  "_comment": "machineread.ai is a reserved future production domain. It is not yet live. Until production hosting ships, the canonical source for this catalog is this public repository under docs/api/. All URLs are placeholders for the eventual production deployment.",
+  "host": {
+    "domain": "machineread.ai"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:machineread.ai:audit:v1",
+      "displayName": "MachineRead Essentials Audit",
+      "mediaType": "application/json",
+      "description": "Free public-readiness audit for institutional websites. Audits a single public HTTP(S) URL for AI visibility, agent accessibility, scrapability, and search-discovery readiness using bounded HTTP, DNS, HTML, metadata, structured-data, robots, sitemap, Markdown, and machine-surface evidence. Returns structured, deterministic findings for 13 included check groups against a 56-point checked maximum, plus a separate strict agent-readiness score.",
+      "capabilities": [
+        "website-audit",
+        "ai-readiness",
+        "agent-accessibility",
+        "search-discovery"
+      ],
+      "representativeQueries": [
+        "audit example.com for AI readiness",
+        "check if my site is agent-accessible",
+        "scan mashable.com machine readability"
+      ],
+      "updated": "2026-07-19",
+      "url": "https://machineread.ai/docs/api/",
+      "_productionStatus": "Reserved future domain; not yet live. This URL is a placeholder for the eventual production deployment."
+    }
+  ]
+}

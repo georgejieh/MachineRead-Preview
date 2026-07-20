@@ -1,0 +1,55 @@
+{
+  "_comment": "machineread.ai is a reserved future production domain. It is not yet live. Until production hosting ships, the canonical source for this catalog is this public repository under docs/api/. All URLs are placeholders for the eventual production deployment.",
+  "linkset": [
+    {
+      "anchor": "https://machineread.ai/",
+      "_anchorNote": "Reserved future production domain; not yet live.",
+      "api-catalog": [
+        {
+          "href": "/openapi.json",
+          "type": "application/vnd.oai.openapi+json;version=3.1",
+          "title": "MachineRead public audit API schema (OpenAPI 3.1)",
+          "hreflang": "en"
+        }
+      ],
+      "ai-catalog": [
+        {
+          "href": "/ai-catalog.json",
+          "type": "application/json",
+          "title": "MachineRead ARD ai-catalog (static discovery metadata)",
+          "hreflang": "en"
+        }
+      ],
+      "llms-txt": [
+        {
+          "href": "/llms.txt",
+          "type": "text/plain",
+          "title": "MachineRead product-level llms.txt",
+          "hreflang": "en"
+        }
+      ],
+      "service-desc": [
+        {
+          "href": "/openapi.json",
+          "type": "application/vnd.oai.openapi+json;version=3.1",
+          "title": "MachineRead public audit API service description"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "/docs/api/",
+          "type": "text/html",
+          "title": "MachineRead API reference (Markdown)"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://machineread.ai/docs",
+          "type": "text/html",
+          "title": "MachineRead product documentation",
+          "_note": "Reserved future production URL; not yet live."
+        }
+      ]
+    }
+  ]
+}

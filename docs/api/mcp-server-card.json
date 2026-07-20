@@ -1,0 +1,37 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json",
+  "name": "io.github.machineread/mcp",
+  "title": "MachineRead Essentials Audit MCP Server",
+  "version": "0.1.0",
+  "description": "Read-only MCP server exposing the free MachineRead Essentials audit to MCP-compatible agents. Anonymous, rate-limited, and free; no authentication or paid execution.",
+  "websiteUrl": "https://machineread.ai/",
+  "websiteUrlNote": "Reserved future production domain; not yet live. The public source for this server card is the public repository under docs/api/.",
+  "repository": {
+    "url": "https://github.com/georgejieh/MachineRead",
+    "source": "github"
+  },
+  "remotes": [],
+  "_meta": {
+    "io.machineread/server": {
+      "transport": "stdio",
+      "launch": "The MachineRead MCP server is maintained in the private product repository and is not part of the public preview.",
+      "auth": {"required": false, "schemes": []},
+      "rate_limit": {"default": "3/minute per client", "scope": "in-process fixed window"},
+      "tools_count": 4,
+      "tools": [
+        {"name": "run_essentials_audit", "purpose": "Execute a new Essentials audit against a public URL."},
+        {"name": "get_audit_report", "purpose": "Retrieve a cached audit by its audit_id (LRU 32 entries, in-process)."},
+        {"name": "list_available_checks", "purpose": "Enumerate the 13 Essentials check groups with metadata."},
+        {"name": "explain_check", "purpose": "Return detailed rubric, sub-signals, finding examples, and fix examples for a specific check."}
+      ],
+      "caveats": [
+        "Free Essentials does not verify live DuckDuckGo or Bing ranking.",
+        "Free Essentials does not authenticate provider IP ranges.",
+        "Free Essentials does not call Firecrawl or any paid crawler.",
+        "Scores are relative public-readiness signals, not citation share, traffic, search ranking, social traction, conversion, or field Core Web Vitals."
+      ],
+      "logging": "stderr-only with URL and token redaction; never logs customer URL contents",
+      "tool_outputs": "structured {ok, data|error} envelopes with stable error codes: URL_TOO_LONG, URL_NOT_ALLOWED, INVALID_PRESET, RATE_LIMIT_EXCEEDED, AUDIT_SETUP_FAILED, AUDIT_NOT_FOUND, CHECK_NOT_FOUND"
+    }
+  }
+}
