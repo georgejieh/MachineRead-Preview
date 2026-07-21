@@ -168,26 +168,33 @@ class BenchmarkFixtureTests(unittest.TestCase):
 
 class PeerProfileBehaviorTests(unittest.TestCase):
     def test_peer_agent_differs_across_scopes(self) -> None:
-        # Find a bundled peer that passes at least one protocol-scope probe.
-        target = None
-        for profile in benchmarks._BENCHMARK_PROFILES:
-            if "API Catalog" in profile["agent_passed"]:
-                target = profile
-                break
-        self.assertIsNotNone(target, "expected at least one bundled peer with protocol passes")
+        profile = {
+            "name": "Synthetic Scope Peer",
+            "category": "test",
+            "group": "test",
+            "size": "test",
+            "url": "https://scope.example",
+            "essentials_checks": {},
+            "agent_passed": [
+                "robots.txt published",
+                "valid sitemap discovery",
+                "API Catalog",
+                "MCP Server Card",
+            ],
+        }
 
-        base_earned, base_max = peer_agent(target, False, False, False)
-        full_earned, full_max = peer_agent(target, True, True, True)
+        base_earned, base_max = peer_agent(profile, False, False, False)
+        protocols_earned, protocols_max = peer_agent(profile, True, False, False)
+        full_earned, full_max = peer_agent(profile, True, True, True)
 
-        # Full scope has more probes, so max increases
-        self.assertGreater(full_max, base_max)
-        # Same peer should earn more at full scope
-        self.assertGreater(full_earned, base_earned)
+        self.assertEqual(base_max, 8)
+        self.assertEqual(base_earned, 2)
 
-        # Essentials total is scope-independent
-        cs_base, cm_base, _ = peer_essentials(target)
-        cs_full, cm_full, _ = peer_essentials(target)
-        self.assertEqual((cs_base, cm_base), (cs_full, cm_full))
+        self.assertEqual(protocols_max, 14)
+        self.assertEqual(protocols_earned, base_earned + 2)
+
+        self.assertEqual(full_max, 21)
+        self.assertEqual(full_earned, protocols_earned)
 
     def test_peer_essentials_excludes_unknown_evidence(self) -> None:
         # Build a profile where one check has evidence_level=unknown.
