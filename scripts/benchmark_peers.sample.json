@@ -103,5 +103,68 @@
     "group": "service",
     "size": "specialty",
     "url": "https://calendly.com"
+  },
+  {
+    "name": "kottke.org",
+    "category": "Independent blog",
+    "group": "blog",
+    "size": "boutique",
+    "url": "https://kottke.org"
+  },
+  {
+    "name": "Wait But Why",
+    "category": "Long-form blog",
+    "group": "blog",
+    "size": "specialty",
+    "url": "https://waitbutwhy.com"
+  },
+  {
+    "name": "Medium",
+    "category": "Content platform",
+    "group": "blog",
+    "size": "enterprise",
+    "url": "https://medium.com"
+  },
+  {
+    "name": "404 Media",
+    "category": "Journalist-owned outlet",
+    "group": "news",
+    "size": "boutique",
+    "url": "https://www.404media.co"
+  },
+  {
+    "name": "Ars Technica",
+    "category": "Specialty tech publisher",
+    "group": "news",
+    "size": "specialty",
+    "url": "https://arstechnica.com"
+  },
+  {
+    "name": "AP News",
+    "category": "Wire service",
+    "group": "news",
+    "size": "enterprise",
+    "url": "https://apnews.com"
+  },
+  {
+    "name": "Plausible",
+    "category": "Privacy analytics SaaS",
+    "group": "saas",
+    "size": "boutique",
+    "url": "https://plausible.io"
+  },
+  {
+    "name": "Linear",
+    "category": "Project management SaaS",
+    "group": "saas",
+    "size": "specialty",
+    "url": "https://linear.app"
+  },
+  {
+    "name": "Atlassian",
+    "category": "Collaboration software",
+    "group": "saas",
+    "size": "enterprise",
+    "url": "https://www.atlassian.com"
   }
 ]
