@@ -92,15 +92,36 @@ echo    Press Ctrl+C to stop both servers.
 echo.
 echo ========================================
 
-start "MachineRead Backend" cmd /c "set PYTHONPATH= && cd /d %~dp0backend && .venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload"
+:: Run backend in background.
+set PYTHONPATH=
+set PYTHONHOME=
+set "BACKEND_DIR=%~dp0backend"
+set "BACKEND_LOG=%BACKEND_DIR%\backend.log"
+pushd "%BACKEND_DIR%" >nul
+start /B "MachineRead Backend" "%BACKEND_DIR%\.venv\Scripts\python.exe" -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload > "%BACKEND_LOG%" 2>&1
+popd >nul
 
 :: Small delay so the backend starts first
-timeout /t 3 /nobreak >nul
+ping 127.0.0.1 -n 4 >nul
 
-start "MachineRead Frontend" cmd /c "cd /d %~dp0frontend && npm run dev -- -p 3000"
+set "FRONTEND_DIR=%~dp0frontend"
+set "FRONTEND_LOG=%FRONTEND_DIR%\frontend.log"
+pushd "%FRONTEND_DIR%" >nul
+start /B "MachineRead Frontend" "npm.cmd" run dev -- -p 3000 > "%FRONTEND_LOG%" 2>&1
+popd >nul
 
 :: Open browser
 start http://localhost:3000
 
-echo MachineRead is running. Close the server windows or press Ctrl+C here to stop.
+echo MachineRead is running. Tail the backend.log and frontend.log if anything goes wrong.
+echo.
+echo Tailing backend startup (next 6s)...
+ping 127.0.0.1 -n 4 >nul
+type "%BACKEND_LOG%" 2>nul
+echo.
+echo Tailing frontend startup (next 6s)...
+ping 127.0.0.1 -n 4 >nul
+type "%FRONTEND_LOG%" 2>nul
+echo.
+echo Press any key to stop (this will close the launcher window but leave servers running).
 pause >nul
