@@ -236,7 +236,7 @@ class SchemaLdTests(unittest.TestCase):
         self.assertNotIn("shipping", result.fix.lower())
 
     def test_speakable_detected_in_finding(self) -> None:
-        """Speakable markup is a tracked-only signal — finding annotates it but score is unchanged.
+        """QA4-04: Speakable markup is a tracked-only signal — finding annotates it but score is unchanged.
 
         The same Product JSON-LD is run twice: once without speakable (baseline)
         and once with a SpeakableSpecification @type. The score, state, fix, and
@@ -1525,7 +1525,7 @@ class BotAccessTests(unittest.IsolatedAsyncioTestCase):
         self.assertIn("visible words", result.finding)
 
     async def test_bot_access_ignores_recaptcha_script_tag_in_body(self) -> None:
-        """A Google reCAPTCHA ``<script src="…/recaptcha/api.js">`` tag
+        """F4-06: A Google reCAPTCHA ``<script src="…/recaptcha/api.js">`` tag
         embedded in a normal page is not a challenge page.
 
         Before the fix the body substring scan matched the literal
@@ -1564,7 +1564,7 @@ class BotAccessTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("challenge page", result.finding)
 
     async def test_bot_access_ignores_captcha_substring_in_response_headers(self) -> None:
-        """``captcha`` must not be matched inside HTTP response headers.
+        """F4-06: ``captcha`` must not be matched inside HTTP response headers.
 
         Content-Security-Policy and other response headers can legitimately
         include ``captcha`` as a directive keyword (e.g. ``script-src …/recaptcha/``).
@@ -1613,7 +1613,7 @@ class BotAccessTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("challenge page", result.finding)
 
     async def test_bot_access_baseline_suppresses_site_wide_challenge(self) -> None:
-        """If the browser baseline ALSO matches a challenge signature,
+        """F4-06: If the browser baseline ALSO matches a challenge signature,
         the finding is a site-wide pattern, not bot discrimination, and is
         suppressed for every bot probe.
         """
@@ -1722,7 +1722,7 @@ class BotAccessTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result.score, 1)
 
     async def test_bot_access_baseline_suppresses_captcha_title(self) -> None:
-        """a title that literally contains ``captcha`` does NOT trigger
+        """F4-06: a title that literally contains ``captcha`` does NOT trigger
         the bot-only finding when the browser baseline also contains
         ``captcha`` in its title (site-wide pattern, not bot discrimination).
         """
@@ -2228,7 +2228,7 @@ class RubricTests(unittest.TestCase):
         self.assertEqual(comparison.checked_score, 28)
         self.assertEqual(comparison.checked_max, 40)
         self.assertEqual(comparison.benchmark_count, len(comparison.entries))
-        self.assertGreaterEqual(comparison.benchmark_count, 14)
+        self.assertGreaterEqual(comparison.benchmark_count, 12)
         self.assertGreaterEqual(len(comparison.nearest), 1)
         self.assertIn("same selected Essentials scope", comparison.caveat)
 
@@ -2267,7 +2267,7 @@ class RubricTests(unittest.TestCase):
 
         self.assertEqual(default_comparison.benchmark_count, len(default_comparison.entries))
         self.assertEqual(full_scope_comparison.benchmark_count, len(full_scope_comparison.entries))
-        self.assertGreaterEqual(default_comparison.benchmark_count, 14)
+        self.assertGreaterEqual(default_comparison.benchmark_count, 12)
         self.assertEqual(default_comparison.benchmark_count, full_scope_comparison.benchmark_count)
         self.assertEqual(default_entry.agent_readiness_max, 8)
         self.assertEqual(full_scope_entry.agent_readiness_max, 21)

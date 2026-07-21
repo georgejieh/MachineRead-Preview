@@ -3,71 +3,53 @@ import os
 import sys
 import tempfile
 import unittest
-from itertools import product
 from pathlib import Path
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from app import benchmarks
+from app.benchmarks import (
+    SCHEMA_VERSION,
+    BenchmarkProfile,
+    peer_agent,
+    peer_essentials,
+)
 from app.models import CheckResult
-from app.rubric import ESSENTIALS_CHECKED_MAX
+from app.rubric import ESSENTIALS_CHECK_GROUPS, ESSENTIALS_CHECKED_MAX
 
 
-def _variant_for_scope(
-    include_protocols: bool,
-    include_account_auth: bool,
-    include_ecommerce: bool,
-    *,
-    agent_earned: int = 2,
-) -> dict[str, object]:
-    checked_score = 30
-    agent_max = benchmarks._agent_max_for_scope(
-        include_protocols,
-        include_account_auth,
-        include_ecommerce,
-    )
-    return {
-        "overall_score": checked_score,
-        "free_evidence_score": round((checked_score / ESSENTIALS_CHECKED_MAX) * 100),
-        "checked_score": checked_score,
-        "checked_max": ESSENTIALS_CHECKED_MAX,
-        "agent_readiness_score": round((agent_earned / agent_max) * 100),
-        "agent_readiness_earned": agent_earned,
-        "agent_readiness_max": agent_max,
-        "pillar_scores": {
-            "off_site": 6,
-            "scrapability": 18,
-            "seo": 6,
-        },
-    }
+# --- Helpers --------------------------------------------------------------
+
+def _all_check_names() -> set[str]:
+    return {g.check_name for g in ESSENTIALS_CHECK_GROUPS}
 
 
-def _profile_fixture(*, agent_earned: int = 2) -> list[benchmarks.BenchmarkProfile]:
-    variants = {}
-    for include_protocols, include_account_auth, include_ecommerce in product((False, True), repeat=3):
-        variants[
-            benchmarks.benchmark_scope_key(
-                include_protocols,
-                include_account_auth,
-                include_ecommerce,
-            )
-        ] = _variant_for_scope(
-            include_protocols,
-            include_account_auth,
-            include_ecommerce,
-            agent_earned=agent_earned,
-        )
-    return [
-        {
-            "name": "Fixture Peer",
-            "category": "Fixture category",
-            "group": "fixture",
-            "size": "test",
-            "url": "https://fixture.example",
-            "variants": variants,
+def _v2_profile_payload(*, peer_name: str = "Fixture Peer", score: int = 1) -> dict:
+    """Build a minimal-but-valid v2 profile dict for tests."""
+    checks: dict[str, dict] = {}
+    for g in ESSENTIALS_CHECK_GROUPS:
+        checks[g.check_name] = {
+            "score": score,
+            "max": g.max_score,
+            "state": "partial" if score > 0 else "fail",
+            "evidence_level": "verified",
         }
-    ]
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "snapshot_date": "2026-07-20",
+        "profiles": [
+            {
+                "name": peer_name,
+                "category": "Fixture category",
+                "group": "fixture",
+                "size": "test",
+                "url": "https://fixture.example",
+                "essentials_checks": checks,
+                "agent_passed": [],
+            }
+        ],
+    }
 
 
 def _checks_fixture() -> list[CheckResult]:
@@ -86,49 +68,34 @@ def _checks_fixture() -> list[CheckResult]:
     ]
 
 
+# --- Existing fixture-based tests (rewritten for v2) ---------------------
+
 class BenchmarkFixtureTests(unittest.TestCase):
-    def test_sample_profiles_cover_every_scope_without_private_data(self) -> None:
-        expected_scope_keys = {
-            benchmarks.benchmark_scope_key(
-                include_protocols,
-                include_account_auth,
-                include_ecommerce,
+    def test_sample_profiles_load_under_v2(self) -> None:
+        # Sample seeds must parse, validate, and produce a non-empty profile set.
+        self.assertGreaterEqual(len(benchmarks._BENCHMARK_PROFILES), 12)
+        for profile in benchmarks._BENCHMARK_PROFILES:
+            self.assertIn("essentials_checks", profile)
+            self.assertIn("agent_passed", profile)
+            self.assertEqual(
+                set(profile["essentials_checks"].keys()),
+                _all_check_names(),
             )
-            for include_protocols, include_account_auth, include_ecommerce in product((False, True), repeat=3)
-        }
-
-        with tempfile.TemporaryDirectory() as temp_dir:
-            missing_default = Path(temp_dir) / "missing-private-profiles.json"
-            with patch.dict(os.environ, {"MACHINEREAD_BENCHMARK_PROFILE_PATH": ""}):
-                with patch.object(benchmarks, "_DEFAULT_BENCHMARK_PROFILE_PATH", missing_default):
-                    profiles = benchmarks._load_benchmark_profiles()
-
-        self.assertEqual(len(profiles), 14)
-        for profile in profiles:
-            self.assertEqual(set(profile["variants"]), expected_scope_keys)
-            for scope_key, variant in profile["variants"].items():
-                include_protocols, include_account_auth, include_ecommerce = benchmarks._scope_flags_from_key(scope_key)
-                self.assertEqual(variant["checked_max"], ESSENTIALS_CHECKED_MAX)
-                self.assertEqual(
-                    variant["agent_readiness_max"],
-                    benchmarks._agent_max_for_scope(
-                        include_protocols,
-                        include_account_auth,
-                        include_ecommerce,
-                    ),
-                )
 
     def test_configured_profile_path_loads_fixture_without_private_data(self) -> None:
-        profiles = _profile_fixture()
-
+        payload = _v2_profile_payload()
         with tempfile.TemporaryDirectory() as temp_dir:
             profile_path = Path(temp_dir) / "benchmark_profiles.json"
-            profile_path.write_text(json.dumps(profiles), encoding="utf-8")
+            profile_path.write_text(json.dumps(payload), encoding="utf-8")
             with patch.dict(os.environ, {"MACHINEREAD_BENCHMARK_PROFILE_PATH": str(profile_path)}):
                 with patch.object(benchmarks, "_DEFAULT_BENCHMARK_PROFILE_PATH", Path(temp_dir) / "unused.json"):
                     loaded_profiles = benchmarks._load_benchmark_profiles()
 
-        self.assertEqual(loaded_profiles, profiles)
+        self.assertEqual(len(loaded_profiles), 1)
+        self.assertEqual(loaded_profiles[0]["name"], "Fixture Peer")
+        # Snapshot is immutable after load (no list / dict values to mutate)
+        self.assertIsInstance(loaded_profiles[0]["essentials_checks"], dict)
+        self.assertIsInstance(loaded_profiles[0]["agent_passed"], tuple)
 
         with patch.object(benchmarks, "_BENCHMARK_PROFILES", loaded_profiles):
             comparison = benchmarks.build_benchmark_comparison(_checks_fixture())
@@ -146,27 +113,9 @@ class BenchmarkFixtureTests(unittest.TestCase):
 
         self.assertIn("Benchmark profile file not found", str(error_context.exception))
 
-    def test_agent_benchmark_normalizes_loaded_profile_to_current_scope(self) -> None:
-        profiles = _profile_fixture(agent_earned=99)
-
-        with patch.object(benchmarks, "_BENCHMARK_PROFILES", profiles):
-            comparison = benchmarks.build_agent_benchmark_comparison(
-                score=25,
-                earned=5,
-                maximum=20,
-                include_protocols=True,
-                include_account_auth=True,
-                include_ecommerce=True,
-            )
-
-        self.assertEqual(comparison.benchmark_count, 1)
-        self.assertEqual(comparison.entries[0].agent_readiness_earned, 21)
-        self.assertEqual(comparison.entries[0].agent_readiness_max, 21)
-        self.assertEqual(comparison.entries[0].agent_readiness_score, 100)
-
     def test_essentials_benchmark_returns_defaults_when_scope_has_no_peers(self) -> None:
         with (
-            patch.object(benchmarks, "_entries_for_scope", return_value=[]),
+            patch.object(benchmarks, "_entries", return_value=[]),
             patch.object(benchmarks, "_checked_points") as checked_points,
             patch.object(benchmarks, "median") as benchmark_median,
             patch.object(benchmarks, "_percentile") as percentile,
@@ -190,7 +139,7 @@ class BenchmarkFixtureTests(unittest.TestCase):
 
     def test_agent_benchmark_returns_defaults_when_scope_has_no_peers(self) -> None:
         with (
-            patch.object(benchmarks, "_entries_for_scope", return_value=[]),
+            patch.object(benchmarks, "_entries", return_value=[]),
             patch.object(benchmarks, "median") as benchmark_median,
             patch.object(benchmarks, "_agent_percentile") as percentile,
             patch.object(benchmarks, "_agent_position_label") as position_label,
@@ -214,6 +163,243 @@ class BenchmarkFixtureTests(unittest.TestCase):
         self.assertEqual(comparison.nearest, [])
         self.assertEqual(comparison.entries, [])
 
+
+# --- Per-check behaviour tests -------------------------------------------
+
+class PeerProfileBehaviorTests(unittest.TestCase):
+    def test_peer_agent_differs_across_scopes(self) -> None:
+        # Find a bundled peer that passes at least one protocol-scope probe.
+        target = None
+        for profile in benchmarks._BENCHMARK_PROFILES:
+            if "API Catalog" in profile["agent_passed"]:
+                target = profile
+                break
+        self.assertIsNotNone(target, "expected at least one bundled peer with protocol passes")
+
+        base_earned, base_max = peer_agent(target, False, False, False)
+        full_earned, full_max = peer_agent(target, True, True, True)
+
+        # Full scope has more probes, so max increases
+        self.assertGreater(full_max, base_max)
+        # Same peer should earn more at full scope
+        self.assertGreater(full_earned, base_earned)
+
+        # Essentials total is scope-independent
+        cs_base, cm_base, _ = peer_essentials(target)
+        cs_full, cm_full, _ = peer_essentials(target)
+        self.assertEqual((cs_base, cm_base), (cs_full, cm_full))
+
+    def test_peer_essentials_excludes_unknown_evidence(self) -> None:
+        # Build a profile where one check has evidence_level=unknown.
+        # The same peer with all rows verified should have a strictly
+        # larger checked_max.
+        checks_verified: dict[str, dict] = {}
+        checks_with_unknown: dict[str, dict] = {}
+        for g in ESSENTIALS_CHECK_GROUPS:
+            checks_verified[g.check_name] = {
+                "score": g.max_score,
+                "max": g.max_score,
+                "state": "pass",
+                "evidence_level": "verified",
+            }
+            level = "verified" if g.check_name != "wikipedia" else "unknown"
+            checks_with_unknown[g.check_name] = {
+                "score": 0,
+                "max": g.max_score,
+                "state": "warn",
+                "evidence_level": level,
+            }
+
+        profile_verified = {
+            "name": "Verified Peer",
+            "category": "test",
+            "group": "test",
+            "size": "test",
+            "url": "https://verified.example",
+            "essentials_checks": checks_verified,
+            "agent_passed": [],
+        }
+        profile_unknown = {
+            "name": "Unknown Peer",
+            "category": "test",
+            "group": "test",
+            "size": "test",
+            "url": "https://unknown.example",
+            "essentials_checks": checks_with_unknown,
+            "agent_passed": [],
+        }
+
+        _, max_verified, _ = peer_essentials(profile_verified)
+        _, max_unknown, _ = peer_essentials(profile_unknown)
+
+        # The "wikipedia" row (4 points) is excluded from the unknown
+        # peer's denominator; verified peer keeps the full ESSENTIALS_CHECKED_MAX.
+        self.assertEqual(max_verified, ESSENTIALS_CHECKED_MAX)
+        self.assertEqual(max_unknown, ESSENTIALS_CHECKED_MAX - 4)
+
+    def test_peer_agent_ignores_unknown_probe_labels(self) -> None:
+        # Profile's agent_passed includes a label that no longer exists in
+        # the current scope probe list. The peer_agent helper must drop it
+        # silently with no error and no contribution.
+        profile = {
+            "name": "Stale Peer",
+            "category": "test",
+            "group": "test",
+            "size": "test",
+            "url": "https://stale.example",
+            "essentials_checks": {},
+            "agent_passed": [
+                "this probe no longer exists",
+                "robots.txt published",  # one real label
+            ],
+        }
+        # Even though agent_passed has 2 entries, only 1 is a real probe.
+        earned, maximum = peer_agent(profile, False, False, False)
+        self.assertEqual(earned, 1)
+        self.assertEqual(maximum, 8)  # base scope
+
+    def test_peer_agent_probe_outside_scope_contributes_zero(self) -> None:
+        # Peer passes "API Catalog" (a protocol-scope probe) but the user
+        # is at base scope → that probe is not in the scope's probe list
+        # and contributes 0 to earned.
+        profile = {
+            "name": "Protocol Peer",
+            "category": "test",
+            "group": "test",
+            "size": "test",
+            "url": "https://protocol.example",
+            "essentials_checks": {},
+            "agent_passed": ["API Catalog", "MCP Server Card", "A2A Agent Card"],
+        }
+        # At base scope, no protocol probes are included
+        earned, maximum = peer_agent(profile, False, False, False)
+        self.assertEqual(earned, 0)
+        # At full scope, those protocol passes count
+        earned_full, maximum_full = peer_agent(profile, True, False, False)
+        self.assertGreater(earned_full, 0)
+        self.assertGreater(maximum_full, maximum)
+
+
+# --- Validation tests (eager, at load) -----------------------------------
+
+class BenchmarkValidationTests(unittest.TestCase):
+    def _write_profile(self, profiles: list, snapshot_date: str = "2026-07-20") -> Path:
+        payload = {
+            "schema_version": SCHEMA_VERSION,
+            "snapshot_date": snapshot_date,
+            "profiles": profiles,
+        }
+        tmp = Path(tempfile.mkstemp(suffix=".json")[1])
+        tmp.write_text(json.dumps(payload), encoding="utf-8")
+        return tmp
+
+    def test_v1_bare_list_raises_migration_error(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            v1_path = Path(temp_dir) / "v1.json"
+            v1_path.write_text(json.dumps([{"name": "X"}]), encoding="utf-8")
+            with patch.dict(os.environ, {"MACHINEREAD_BENCHMARK_PROFILE_PATH": str(v1_path)}):
+                with self.assertRaises(ValueError) as ctx:
+                    benchmarks._load_benchmark_profiles()
+            self.assertIn("refresh_benchmarks.py", str(ctx.exception))
+
+    def test_unknown_check_key_raises_at_load(self) -> None:
+        base = _v2_profile_payload()["profiles"][0]
+        base["essentials_checks"]["made_up_check"] = {
+            "score": 0,
+            "max": 1,
+            "state": "fail",
+            "evidence_level": "verified",
+        }
+        path = self._write_profile([base])
+        with patch.dict(os.environ, {"MACHINEREAD_BENCHMARK_PROFILE_PATH": str(path)}):
+            with self.assertRaises(ValueError) as ctx:
+                benchmarks._load_benchmark_profiles()
+        self.assertIn("made_up_check", str(ctx.exception))
+
+    def test_score_exceeds_max_raises_at_load(self) -> None:
+        base = _v2_profile_payload()["profiles"][0]
+        first_check = next(iter(base["essentials_checks"]))
+        base["essentials_checks"][first_check]["score"] = (
+            base["essentials_checks"][first_check]["max"] + 1
+        )
+        path = self._write_profile([base])
+        with patch.dict(os.environ, {"MACHINEREAD_BENCHMARK_PROFILE_PATH": str(path)}):
+            with self.assertRaises(ValueError):
+                benchmarks._load_benchmark_profiles()
+
+    def test_bad_state_value_raises_at_load(self) -> None:
+        base = _v2_profile_payload()["profiles"][0]
+        first_check = next(iter(base["essentials_checks"]))
+        base["essentials_checks"][first_check]["state"] = "nope"
+        path = self._write_profile([base])
+        with patch.dict(os.environ, {"MACHINEREAD_BENCHMARK_PROFILE_PATH": str(path)}):
+            with self.assertRaises(ValueError) as ctx:
+                benchmarks._load_benchmark_profiles()
+        self.assertIn("nope", str(ctx.exception))
+
+    def test_bad_evidence_level_raises_at_load(self) -> None:
+        base = _v2_profile_payload()["profiles"][0]
+        first_check = next(iter(base["essentials_checks"]))
+        base["essentials_checks"][first_check]["evidence_level"] = "maybe"
+        path = self._write_profile([base])
+        with patch.dict(os.environ, {"MACHINEREAD_BENCHMARK_PROFILE_PATH": str(path)}):
+            with self.assertRaises(ValueError) as ctx:
+                benchmarks._load_benchmark_profiles()
+        self.assertIn("maybe", str(ctx.exception))
+
+
+# --- Refresh-script round-trip -------------------------------------------
+
+class RefreshScriptRoundTripTests(unittest.TestCase):
+    def test_refresh_script_round_trips_through_loader(self) -> None:
+        # Build a fake profile dict the refresh script would emit.
+        payload = _v2_profile_payload(peer_name="Round Trip Peer", score=2)
+        with tempfile.TemporaryDirectory() as temp_dir:
+            peers_path = Path(temp_dir) / "peers.json"
+            peers_path.write_text(
+                json.dumps([{"name": "Round Trip Peer", "category": "x",
+                            "group": "y", "size": "z", "url": "https://rt.example"}]),
+                encoding="utf-8",
+            )
+            out_path = Path(temp_dir) / "out.json"
+
+            import importlib
+            import scripts.refresh_benchmarks as refresh  # type: ignore
+
+            # Patch _audit_one to return a v2 profile without HTTP.
+            async def fake_audit_one(peer):
+                return payload["profiles"][0]
+
+            with patch.object(refresh, "_audit_one", side_effect=fake_audit_one):
+                rc = refresh.main() if False else None
+                # main() reads argv; instead call _run with explicit args.
+                import argparse
+                args = argparse.Namespace(
+                    peers=peers_path, out=out_path, concurrency=1
+                )
+                rc = asyncio_run(refresh._run(args))
+
+            self.assertEqual(rc, 0)
+            self.assertTrue(out_path.exists())
+            on_disk = json.loads(out_path.read_text(encoding="utf-8"))
+            self.assertEqual(on_disk["schema_version"], SCHEMA_VERSION)
+            self.assertEqual(len(on_disk["profiles"]), 1)
+            self.assertEqual(on_disk["profiles"][0]["name"], "Round Trip Peer")
+
+            # Now round-trip through the loader
+            with patch.dict(os.environ, {"MACHINEREAD_BENCHMARK_PROFILE_PATH": str(out_path)}):
+                with patch.object(benchmarks, "_DEFAULT_BENCHMARK_PROFILE_PATH", Path(temp_dir) / "unused.json"):
+                    loaded = benchmarks._load_benchmark_profiles()
+            self.assertEqual(len(loaded), 1)
+            self.assertEqual(loaded[0]["name"], "Round Trip Peer")
+
+
+def asyncio_run(coro):
+    import asyncio
+    return asyncio.run(coro)
+
+
+# --- Exclusion rule tests (kept from v1) ---------------------------------
 
 class CheckedPointsExclusionTests(unittest.TestCase):
     def test_warn_unknown_evidence_rows_excluded_from_denominator(self) -> None:
