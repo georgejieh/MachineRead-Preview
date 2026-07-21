@@ -70,6 +70,18 @@ Scope options let users include or exclude protocol/API, account/auth, and
 commerce expectations before a scan runs, so a general website is not penalized
 for irrelevant surfaces.
 
+### Benchmarks
+
+Peer benchmark profiles are per-check rather than per-scope: each peer is
+captured once at full scope, then its score is recomputed at request time from
+your chosen scope's included checks and probes. The bundled sample in
+`_SAMPLE_BENCHMARK_SEEDS` is fictional and ships with the public tree for the
+demo experience. For a real benchmark snapshot, run
+`python scripts/refresh_benchmarks.py --peers scripts/benchmark_peers.sample.json --out backend/private_data/benchmark_profiles.json`
+from the repo root, which will fetch each peer at full scope and write the
+v2 profile JSON. The public tree ships sample seeds; the private deploy
+updates the real snapshot monthly.
+
 ## Limitations
 
 Essentials does not prove real search ranking, search traffic, backlinks,
