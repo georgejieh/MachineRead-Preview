@@ -1,9 +1,8 @@
 @echo off
-chcp 65001 >nul
 setlocal enabledelayedexpansion
 
 echo ========================================
-echo   MachineRead — Free Website Audit Tool
+echo   MachineRead -- Free Website Audit Tool
 echo ========================================
 echo.
 

@@ -1,12 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Force UTF-8 so the em-dash and other characters render correctly
-export LANG=C.UTF-8
-export LC_ALL=C.UTF-8
-
 echo "========================================"
-echo "  MachineRead — Free Website Audit Tool"
+echo   MachineRead -- Free Website Audit Tool
 echo "========================================"
 echo
 
