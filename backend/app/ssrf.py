@@ -33,7 +33,17 @@ def _resolve_addresses(hostname: str) -> list[tuple[str, int | None]]:
         resolved = socket.getaddrinfo(hostname, None)
     except socket.gaierror as exc:
         raise ValueError(f"Cannot resolve hostname: {exc}") from exc
-    return [(sockaddr[0], sockaddr[1] if len(sockaddr) > 1 else None) for *_, sockaddr in resolved]
+    # Prefer IPv4 results when both families are returned. The pin layer
+    # writes the address into a URL literal; IPv6 addresses need bracket
+    # handling, so preferring IPv4 keeps the rewrite layer simple and
+    # avoids surprise failures on dual-stack deployments where AAAA
+    # sorts ahead of A.
+    def _to_pair(info: tuple) -> tuple[str, int | None]:
+        sockaddr = info[4]
+        return (sockaddr[0], sockaddr[1] if len(sockaddr) > 1 else None)
+
+    ipv4 = [_to_pair(info) for info in resolved if info[0] == socket.AF_INET]
+    return ipv4 or [_to_pair(info) for info in resolved]
 
 
 def validate_url(url: str) -> str:

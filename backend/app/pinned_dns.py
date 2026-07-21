@@ -69,29 +69,33 @@ def _rewrite_for_pinned_ip(request: httpx.Request, pinned_address: str) -> httpx
     original_host = request.url.host
     original_scheme = request.url.scheme
     original_port = request.url.port
-    original_path = request.url.raw_path.decode("ascii")
     original_https = original_scheme == "https"
+    is_ipv6 = ":" in pinned_address
 
-    # Build a new URL that points at the pinned IP but keeps the
-    # original scheme, port, path, and query string. We pass the full
-    # raw path (which already includes the query) to httpx.URL so it
-    # parses correctly without us re-assembling it.
-    raw_with_query = request.url.raw_path
-    # ``raw_path`` may be bytes (httpx.URL stores it that way) — decode
-    # only for string interpolation into the URL constructor.
-    if isinstance(raw_with_query, bytes):
-        raw_with_query_str = raw_with_query.decode("ascii")
-    else:
-        raw_with_query_str = raw_with_query
+    # The IP literal must be bracketed in URLs (``http://[::1]/``) when
+    # it's an IPv6 address, otherwise the second colon is parsed as a
+    # port delimiter. IPv4 addresses pass through unchanged.
+    host_in_url = f"[{pinned_address}]" if is_ipv6 else pinned_address
 
+    # The raw_path carries the path and query string; httpx stores it as
+    # bytes — decode for URL interpolation.
+    raw_path = request.url.raw_path
+    if isinstance(raw_path, bytes):
+        raw_path = raw_path.decode("ascii")
+
+    # The original URL's port belongs on the connect side too: without
+    # it the TCP socket connects to the scheme's default port while the
+    # Host header still names the explicit port, and the server rejects
+    # the request.
+    port_suffix = f":{original_port}" if original_port else ""
     ip_url = httpx.URL(
-        f"{original_scheme}://{pinned_address}{raw_with_query_str}"
+        f"{original_scheme}://{host_in_url}{port_suffix}{raw_path}"
     )
 
     # Carry the Host header through with the original hostname so the
     # server's virtual-host routing matches the SNI. The default Host
     # header that httpcore would generate from the rewritten URL
-    # would otherwise be the IP literal.
+    # would otherwise be the IP literal (or bracketed IP).
     headers = [
         (name, value) for (name, value) in request.headers.items()
         if name.lower() != "host"
