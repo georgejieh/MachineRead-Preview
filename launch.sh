@@ -2,7 +2,7 @@
 set -euo pipefail
 
 echo "========================================"
-echo "  MachineRead - Free Website Audit Tool"
+echo "  MachineRead — Free Website Audit Tool"
 echo "========================================"
 echo
 
@@ -72,8 +72,8 @@ echo
 echo "========================================"
 
 # Start backend in background
-cd "$SCRIPT_DIR"
-source backend/.venv/bin/activate
+cd "$SCRIPT_DIR/backend"
+source .venv/bin/activate
 python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 &
 BACKEND_PID=$!
 
