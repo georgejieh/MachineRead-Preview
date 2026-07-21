@@ -364,7 +364,7 @@ _SAMPLE_BENCHMARK_SEEDS: list[dict] = [
     _seed_profile(
         name="Example Retail Enterprise",
         category="Major retailer",
-        group="commerce",
+        group="ecommerce",
         size="enterprise",
         url="https://example.com/retail",
         check_scores={
@@ -379,7 +379,7 @@ _SAMPLE_BENCHMARK_SEEDS: list[dict] = [
     _seed_profile(
         name="Example Consumer Brand",
         category="Major consumer brand",
-        group="commerce",
+        group="ecommerce",
         size="enterprise",
         url="https://example.com/consumer",
         check_scores={
@@ -394,7 +394,7 @@ _SAMPLE_BENCHMARK_SEEDS: list[dict] = [
     _seed_profile(
         name="Example Commerce Platform",
         category="Commerce platform",
-        group="commerce",
+        group="ecommerce",
         size="enterprise",
         url="https://example.com/platform",
         check_scores={
@@ -409,7 +409,7 @@ _SAMPLE_BENCHMARK_SEEDS: list[dict] = [
     _seed_profile(
         name="Example Product Studio",
         category="Niche DTC product",
-        group="commerce",
+        group="ecommerce",
         size="specialty",
         url="https://example.com/product",
         check_scores={
@@ -424,7 +424,7 @@ _SAMPLE_BENCHMARK_SEEDS: list[dict] = [
     _seed_profile(
         name="Example Beauty Brand",
         category="Niche beauty brand",
-        group="commerce",
+        group="ecommerce",
         size="specialty",
         url="https://example.com/beauty",
         check_scores={
@@ -439,7 +439,7 @@ _SAMPLE_BENCHMARK_SEEDS: list[dict] = [
     _seed_profile(
         name="Example Outdoor Shop",
         category="Specialty commerce",
-        group="commerce",
+        group="ecommerce",
         size="specialty",
         url="https://example.com/outdoor",
         check_scores={
@@ -454,7 +454,7 @@ _SAMPLE_BENCHMARK_SEEDS: list[dict] = [
     _seed_profile(
         name="Example Paper Goods",
         category="Boutique product",
-        group="commerce",
+        group="ecommerce",
         size="boutique",
         url="https://example.com/paper",
         check_scores={
@@ -469,7 +469,7 @@ _SAMPLE_BENCHMARK_SEEDS: list[dict] = [
     _seed_profile(
         name="Example Desk Goods",
         category="Boutique product",
-        group="commerce",
+        group="ecommerce",
         size="boutique",
         url="https://example.com/desk",
         check_scores={
@@ -529,7 +529,7 @@ _SAMPLE_BENCHMARK_SEEDS: list[dict] = [
     _seed_profile(
         name="Example Scheduling Service",
         category="SaaS service",
-        group="service",
+        group="services",
         size="specialty",
         url="https://example.com/scheduling",
         check_scores={

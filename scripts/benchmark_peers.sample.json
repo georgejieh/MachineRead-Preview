@@ -2,56 +2,56 @@
   {
     "name": "Field Notes",
     "category": "Boutique product",
-    "group": "commerce",
+    "group": "ecommerce",
     "size": "boutique",
     "url": "https://fieldnotesbrand.com"
   },
   {
     "name": "Grovemade",
     "category": "Boutique product",
-    "group": "commerce",
+    "group": "ecommerce",
     "size": "boutique",
     "url": "https://grovemade.com"
   },
   {
     "name": "Nike",
     "category": "Major consumer brand",
-    "group": "commerce",
+    "group": "ecommerce",
     "size": "enterprise",
     "url": "https://www.nike.com"
   },
   {
     "name": "Shopify",
     "category": "Commerce platform",
-    "group": "commerce",
+    "group": "ecommerce",
     "size": "enterprise",
     "url": "https://www.shopify.com"
   },
   {
     "name": "Target",
     "category": "Major retailer",
-    "group": "commerce",
+    "group": "ecommerce",
     "size": "enterprise",
     "url": "https://www.target.com"
   },
   {
     "name": "Allbirds",
     "category": "Niche DTC product",
-    "group": "commerce",
+    "group": "ecommerce",
     "size": "specialty",
     "url": "https://www.allbirds.com"
   },
   {
     "name": "Glossier",
     "category": "Niche beauty brand",
-    "group": "commerce",
+    "group": "ecommerce",
     "size": "specialty",
     "url": "https://www.glossier.com"
   },
   {
     "name": "Huckberry",
     "category": "Specialty commerce",
-    "group": "commerce",
+    "group": "ecommerce",
     "size": "specialty",
     "url": "https://huckberry.com"
   },
@@ -86,21 +86,21 @@
   {
     "name": "Fathom Analytics",
     "category": "Boutique service software",
-    "group": "service",
+    "group": "services",
     "size": "boutique",
     "url": "https://usefathom.com"
   },
   {
     "name": "Deloitte",
     "category": "Enterprise services",
-    "group": "service",
+    "group": "services",
     "size": "enterprise",
     "url": "https://www.deloitte.com"
   },
   {
     "name": "Calendly",
     "category": "Service software",
-    "group": "service",
+    "group": "services",
     "size": "specialty",
     "url": "https://calendly.com"
   },

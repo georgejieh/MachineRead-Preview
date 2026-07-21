@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -13,6 +13,7 @@ import {
   YAxis,
 } from "recharts";
 import { ESSENTIALS_CHECK_GROUP_COUNT } from "@/lib/rubric";
+import { defaultBenchmarkGroup } from "@/lib/benchmark-defaults";
 import type { AuditResult, BenchmarkEntry, CheckResult, Pillar } from "@/lib/types";
 
 const PILLAR_LABELS: Record<Pillar, string> = {
@@ -32,10 +33,12 @@ const STATE_LABELS: Record<string, string> = {
 };
 
 const GROUP_LABELS: Record<string, string> = {
-  commerce: "Commerce",
+  blog: "Blog",
   corporate: "Corporate",
-  service: "Service",
-  content: "Content",
+  ecommerce: "Ecommerce",
+  news: "News",
+  saas: "SaaS",
+  services: "Services",
 };
 
 const SIZE_LABELS: Record<string, string> = {
@@ -198,8 +201,6 @@ interface BenchmarkExplorerProps {
 
 function BenchmarkExplorer({ result }: BenchmarkExplorerProps) {
   const [mode, setMode] = useState<BenchmarkMode>("essentials");
-  const [group, setGroup] = useState("all");
-  const [size, setSize] = useState("all");
   const entries = mode === "agent" ? result.agent_readiness.benchmark.entries : result.benchmark.entries;
   const nearestUrls = new Set(
     mode === "agent"
@@ -210,6 +211,19 @@ function BenchmarkExplorer({ result }: BenchmarkExplorerProps) {
     () => ["all", ...Array.from(new Set(entries.map((entry) => entry.group))).sort()],
     [entries],
   );
+  const availableGroups = useMemo(
+    () => Array.from(new Set(entries.map((entry) => entry.group))),
+    [entries],
+  );
+  const [group, setGroup] = useState(() =>
+    defaultBenchmarkGroup(result.scope.preset_applied, availableGroups),
+  );
+  useEffect(() => {
+    if (group !== "all" && !availableGroups.includes(group)) {
+      setGroup("all");
+    }
+  }, [group, availableGroups]);
+  const [size, setSize] = useState("all");
   const sizeOptions = useMemo(
     () => ["all", ...Array.from(new Set(entries.map((entry) => entry.size))).sort()],
     [entries],
@@ -524,7 +538,10 @@ export default function ScoreSummary({ result }: Props) {
         <ActionList actions={activeActions} />
       </section>
 
-      <BenchmarkExplorer result={result} />
+      <BenchmarkExplorer
+        key={`${result.url}::${result.scope.preset_applied ?? "all"}`}
+        result={result}
+      />
     </section>
   );
 }
