@@ -136,7 +136,3 @@ CI runs backend tests and frontend type checks on every push.
 ## License
 
 MIT. See [LICENSE](LICENSE).
-
----
-
-**Keywords:** AI SEO, LLM SEO, generative engine optimization (GEO), answer engine optimization (AEO), AI visibility, LLM discoverability, agent readiness, AI crawler access, llms.txt, MCP discovery, A2A, structured data, JSON-LD, schema.org, website audit, scrapability, AI search optimization, ChatGPT visibility, Perplexity visibility, autonomous agents.
