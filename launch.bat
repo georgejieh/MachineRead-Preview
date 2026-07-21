@@ -92,7 +92,7 @@ echo    Press Ctrl+C to stop both servers.
 echo.
 echo ========================================
 
-start "MachineRead Backend" cmd /c "cd /d %~dp0backend && .venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload"
+start "MachineRead Backend" cmd /c "set PYTHONPATH= && cd /d %~dp0backend && .venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload"
 
 :: Small delay so the backend starts first
 timeout /t 3 /nobreak >nul
