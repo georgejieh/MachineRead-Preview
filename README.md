@@ -75,12 +75,14 @@ for irrelevant surfaces.
 Peer benchmark profiles are per-check rather than per-scope: each peer is
 captured once at full scope, then its score is recomputed at request time from
 your chosen scope's included checks and probes. The bundled sample in
-`_SAMPLE_BENCHMARK_SEEDS` is fictional and ships with the public tree for the
-demo experience. For a real benchmark snapshot, run
-`python scripts/refresh_benchmarks.py --peers scripts/benchmark_peers.sample.json --out backend/private_data/benchmark_profiles.json`
-from the repo root, which will fetch each peer at full scope and write the
-v2 profile JSON. The public tree ships sample seeds; the private deploy
-updates the real snapshot monthly.
+`scripts/benchmark_peers.sample.json` ships with the public tree as the
+default peer list for a fresh snapshot. To refresh the on-disk benchmark
+snapshot, run `./scripts/update_benchmarks.sh` (or
+`scripts\update_benchmarks.bat` on Windows) from the repo root — this will
+fetch each peer at full scope and write the v2 profile JSON to
+`backend/private_data/benchmark_profiles.json`. The public tree ships the
+sample peer list as the default; the private deploy updates the real
+snapshot on its own schedule.
 
 ## Limitations
 

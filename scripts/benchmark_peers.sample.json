@@ -1,86 +1,107 @@
 [
   {
-    "name": "Example Retail Enterprise",
-    "category": "Major retailer",
+    "name": "Field Notes",
+    "category": "Boutique product",
     "group": "commerce",
-    "size": "enterprise",
-    "url": "https://example.com/retail"
+    "size": "boutique",
+    "url": "https://fieldnotesbrand.com"
   },
   {
-    "name": "Example Consumer Brand",
+    "name": "Grovemade",
+    "category": "Boutique product",
+    "group": "commerce",
+    "size": "boutique",
+    "url": "https://grovemade.com"
+  },
+  {
+    "name": "Nike",
     "category": "Major consumer brand",
     "group": "commerce",
     "size": "enterprise",
-    "url": "https://example.com/consumer"
+    "url": "https://www.nike.com"
   },
   {
-    "name": "Example Commerce Platform",
+    "name": "Shopify",
     "category": "Commerce platform",
     "group": "commerce",
     "size": "enterprise",
-    "url": "https://example.com/platform"
+    "url": "https://www.shopify.com"
   },
   {
-    "name": "Example Product Studio",
+    "name": "Target",
+    "category": "Major retailer",
+    "group": "commerce",
+    "size": "enterprise",
+    "url": "https://www.target.com"
+  },
+  {
+    "name": "Allbirds",
     "category": "Niche DTC product",
     "group": "commerce",
     "size": "specialty",
-    "url": "https://example.com/product"
+    "url": "https://www.allbirds.com"
   },
   {
-    "name": "Example Beauty Brand",
+    "name": "Glossier",
     "category": "Niche beauty brand",
     "group": "commerce",
     "size": "specialty",
-    "url": "https://example.com/beauty"
+    "url": "https://www.glossier.com"
   },
   {
-    "name": "Example Outdoor Shop",
+    "name": "Huckberry",
     "category": "Specialty commerce",
     "group": "commerce",
     "size": "specialty",
-    "url": "https://example.com/outdoor"
+    "url": "https://huckberry.com"
   },
   {
-    "name": "Example Paper Goods",
-    "category": "Boutique product",
-    "group": "commerce",
+    "name": "37signals",
+    "category": "Independent software company",
+    "group": "corporate",
     "size": "boutique",
-    "url": "https://example.com/paper"
+    "url": "https://37signals.com"
   },
   {
-    "name": "Example Desk Goods",
-    "category": "Boutique product",
-    "group": "commerce",
-    "size": "boutique",
-    "url": "https://example.com/desk"
-  },
-  {
-    "name": "Example Technology Company",
-    "category": "Major technology brand",
+    "name": "Apple",
+    "category": "Major corporate site",
     "group": "corporate",
     "size": "enterprise",
-    "url": "https://example.com/technology"
+    "url": "https://www.apple.com"
   },
   {
-    "name": "Example Developer Platform",
-    "category": "Developer platform",
+    "name": "Anthropic",
+    "category": "AI company",
     "group": "corporate",
     "size": "specialty",
-    "url": "https://example.com/developer"
+    "url": "https://www.anthropic.com"
   },
   {
-    "name": "Example Software Studio",
-    "category": "Software company",
+    "name": "Vercel",
+    "category": "Developer platform company",
     "group": "corporate",
-    "size": "boutique",
-    "url": "https://example.com/software"
+    "size": "specialty",
+    "url": "https://vercel.com"
   },
   {
-    "name": "Example Scheduling Service",
-    "category": "SaaS service",
+    "name": "Fathom Analytics",
+    "category": "Boutique service software",
+    "group": "service",
+    "size": "boutique",
+    "url": "https://usefathom.com"
+  },
+  {
+    "name": "Deloitte",
+    "category": "Enterprise services",
+    "group": "service",
+    "size": "enterprise",
+    "url": "https://www.deloitte.com"
+  },
+  {
+    "name": "Calendly",
+    "category": "Service software",
     "group": "service",
     "size": "specialty",
-    "url": "https://example.com/scheduling"
+    "url": "https://calendly.com"
   }
 ]

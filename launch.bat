@@ -76,15 +76,6 @@ if not exist node_modules (
 echo    Frontend ready.
 cd ..
 
-:: --- Refresh benchmark profiles (best-effort) ----------------------------
-echo    Refreshing benchmark profiles (best-effort) ...
-call backend\.venv\Scripts\python.exe scripts\refresh_benchmarks.py --peers scripts\benchmark_peers.sample.json --out backend\private_data\benchmark_profiles.json >nul 2>&1
-if !errorlevel! neq 0 (
-    echo    Benchmarks refresh skipped ^(using bundled samples^).
-) else (
-    echo    Benchmarks refreshed.
-)
-
 :: --- Launch ----------------------------------------------------------------
 echo [5/5] Starting MachineRead ...
 echo.

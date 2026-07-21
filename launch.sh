@@ -61,14 +61,6 @@ fi
 echo "   Frontend ready."
 cd ..
 
-# --- Refresh benchmark profiles (best-effort) -----------------------------
-echo "   Refreshing benchmark profiles (best-effort) ..."
-if python scripts/refresh_benchmarks.py --peers scripts/benchmark_peers.sample.json --out backend/private_data/benchmark_profiles.json 2>/dev/null; then
-    echo "   Benchmarks refreshed."
-else
-    echo "   Benchmarks refresh skipped (using bundled samples)."
-fi
-
 # --- Launch -----------------------------------------------------------------
 echo "[5/5] Starting MachineRead ..."
 echo
