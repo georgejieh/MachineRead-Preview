@@ -57,3 +57,6 @@ jobs:
 
       - name: Type check frontend
         run: npm --prefix frontend exec -- tsc --noEmit -p frontend/tsconfig.json
+
+      - name: Run frontend unit tests
+        run: node --test frontend/lib/*.test.ts
