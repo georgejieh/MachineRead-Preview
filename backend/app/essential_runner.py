@@ -1,12 +1,8 @@
 """Shared helpers for the Essentials audit pipeline.
 
-This module hosts the helper functions that both ``app.main`` (HTTP) and
-``app.audit_service`` (MCP / service layer) previously maintained as
-near-duplicate copies. The two call sites differ only in observability: the
-HTTP layer wants the failure logged, while the service layer prefers silent
-swallow + a fallback ``CheckResult``. Keeping the functions here means a single
-fix lands in both pipelines and the silent-vs-logged divergence is decided by
-one explicit ``logger`` flag instead of two divergent copies.
+This module hosts the helper functions used by ``app.main`` to build
+the audit response. Keeping the functions here means a single fix
+lands in the audit pipeline without code duplication.
 """
 
 from collections.abc import Awaitable

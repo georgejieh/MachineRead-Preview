@@ -7,9 +7,12 @@ const __dirname = dirname(__filename);
 
 const compat = new FlatCompat({ baseDirectory: __dirname });
 
-export default [
+/** @type {import("eslint").Linter.Config[]} */
+const config = [
   {
     ignores: [".next/**", "node_modules/**", ".venv/**"],
   },
   ...compat.extends("next/core-web-vitals"),
 ];
+
+export default config;
