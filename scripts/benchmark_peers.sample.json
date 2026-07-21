@@ -1,0 +1,86 @@
+[
+  {
+    "name": "Example Retail Enterprise",
+    "category": "Major retailer",
+    "group": "commerce",
+    "size": "enterprise",
+    "url": "https://example.com/retail"
+  },
+  {
+    "name": "Example Consumer Brand",
+    "category": "Major consumer brand",
+    "group": "commerce",
+    "size": "enterprise",
+    "url": "https://example.com/consumer"
+  },
+  {
+    "name": "Example Commerce Platform",
+    "category": "Commerce platform",
+    "group": "commerce",
+    "size": "enterprise",
+    "url": "https://example.com/platform"
+  },
+  {
+    "name": "Example Product Studio",
+    "category": "Niche DTC product",
+    "group": "commerce",
+    "size": "specialty",
+    "url": "https://example.com/product"
+  },
+  {
+    "name": "Example Beauty Brand",
+    "category": "Niche beauty brand",
+    "group": "commerce",
+    "size": "specialty",
+    "url": "https://example.com/beauty"
+  },
+  {
+    "name": "Example Outdoor Shop",
+    "category": "Specialty commerce",
+    "group": "commerce",
+    "size": "specialty",
+    "url": "https://example.com/outdoor"
+  },
+  {
+    "name": "Example Paper Goods",
+    "category": "Boutique product",
+    "group": "commerce",
+    "size": "boutique",
+    "url": "https://example.com/paper"
+  },
+  {
+    "name": "Example Desk Goods",
+    "category": "Boutique product",
+    "group": "commerce",
+    "size": "boutique",
+    "url": "https://example.com/desk"
+  },
+  {
+    "name": "Example Technology Company",
+    "category": "Major technology brand",
+    "group": "corporate",
+    "size": "enterprise",
+    "url": "https://example.com/technology"
+  },
+  {
+    "name": "Example Developer Platform",
+    "category": "Developer platform",
+    "group": "corporate",
+    "size": "specialty",
+    "url": "https://example.com/developer"
+  },
+  {
+    "name": "Example Software Studio",
+    "category": "Software company",
+    "group": "corporate",
+    "size": "boutique",
+    "url": "https://example.com/software"
+  },
+  {
+    "name": "Example Scheduling Service",
+    "category": "SaaS service",
+    "group": "service",
+    "size": "specialty",
+    "url": "https://example.com/scheduling"
+  }
+]
