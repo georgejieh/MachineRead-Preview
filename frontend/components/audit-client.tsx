@@ -16,7 +16,12 @@ import type { AuditResult, CheckResult, Preset } from "@/lib/types";
 type Theme = "light" | "dark";
 
 const BASE_AGENT_PROBE_MAX = 8;
-const PROTOCOL_AGENT_PROBES = 5;
+// +6 covers the 6 `scope == "protocols"` JSON surfaces in
+// backend/app/agent_readiness._JSON_SURFACES: API Catalog, MCP Server
+// Card, A2A Agent Card, Agent Skills index, WebMCP manifest, ARD static
+// catalog. (Plus the base 8 universal probes and the 3 account-auth / 4
+// commerce surfaces when those scopes are included.)
+const PROTOCOL_AGENT_PROBES = 6;
 const ACCOUNT_AUTH_AGENT_PROBES = 3;
 const COMMERCE_AGENT_PROBES = 4;
 
@@ -361,7 +366,8 @@ export default function AuditClient() {
             <div>
               <span>Denominator</span>
               <strong>
-                {ESSENTIALS_CHECKED_POINT_MAX} pts / {agentProbeMax} agent probes
+                {ESSENTIALS_CHECKED_POINT_MAX} pts /{" "}
+                {result ? result.agent_readiness.max : agentProbeMax} agent probes
               </strong>
               <p>{ESSENTIALS_CHECK_GROUP_COUNT} Essentials groups stay in scope.</p>
             </div>
