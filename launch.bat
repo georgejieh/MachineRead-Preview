@@ -16,7 +16,8 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-for /f "tokens=2 delims=." %%a in ('python -c "import sys; print(sys.version_info.minor)"') do set PY_MINOR=%%a
+for /f "tokens=2" %%a in ('python --version 2^>^&1') do set PY_VERSION=%%a
+for /f "tokens=2 delims=." %%a in ("%PY_VERSION%") do set PY_MINOR=%%a
 if %PY_MINOR% lss 11 (
     echo ERROR: Python 3.11+ is required. Found Python 3.%PY_MINOR%.
     pause
@@ -33,7 +34,6 @@ if %errorlevel% neq 0 (
     pause
     exit /b 1
 )
-for /f "tokens=1 delims=v." %%a in ('node -v') do set NODE_MAJOR=%%a
 for /f %%a in ('node -e "console.log(process.version.match(/^v?(\d+)/)[1])"') do set NODE_MAJOR=%%a
 if %NODE_MAJOR% lss 18 (
     echo ERROR: Node.js 18+ is required. Found Node.js v%NODE_MAJOR%.
