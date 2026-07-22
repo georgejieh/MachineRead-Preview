@@ -1,0 +1,2157 @@
+{
+  "schema_version": 2,
+  "snapshot_date": "2026-07-21",
+  "profiles": [
+    {
+      "name": "Grovemade",
+      "category": "Boutique product",
+      "group": "ecommerce",
+      "size": "boutique",
+      "url": "https://grovemade.com",
+      "essentials_checks": {
+        "canonical": {
+          "score": 0,
+          "max": 5,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "indexing": {
+          "score": 0,
+          "max": 5,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "llms_txt": {
+          "score": 1,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "bot_access": {
+          "score": 0,
+          "max": 6,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 1,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "schema_ld": {
+          "score": 0,
+          "max": 5,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "html_structure": {
+          "score": 0,
+          "max": 4,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "social": {
+          "score": 0,
+          "max": 2,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "machine_surfaces": {
+          "score": 0,
+          "max": 3,
+          "state": "warn",
+          "evidence_level": "inferred"
+        },
+        "pagespeed": {
+          "score": 0,
+          "max": 3,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "ssr": {
+          "score": 0,
+          "max": 4,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "wikipedia": {
+          "score": 0,
+          "max": 4,
+          "state": "fail",
+          "evidence_level": "verified"
+        },
+        "robots_txt": {
+          "score": 5,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        }
+      },
+      "agent_passed": [
+        "robots.txt published"
+      ]
+    },
+    {
+      "name": "Field Notes",
+      "category": "Boutique product",
+      "group": "ecommerce",
+      "size": "boutique",
+      "url": "https://fieldnotesbrand.com",
+      "essentials_checks": {
+        "llms_txt": {
+          "score": 2,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 1,
+          "max": 4,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "robots_txt": {
+          "score": 5,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "machine_surfaces": {
+          "score": 1,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 1,
+          "max": 2,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "pagespeed": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "ssr": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "bot_access": {
+          "score": 6,
+          "max": 6,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "schema_ld": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "indexing": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "wikipedia": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": []
+    },
+    {
+      "name": "Nike",
+      "category": "Major consumer brand",
+      "group": "ecommerce",
+      "size": "enterprise",
+      "url": "https://www.nike.com",
+      "essentials_checks": {
+        "bot_access": {
+          "score": 1,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "llms_txt": {
+          "score": 3,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 1,
+          "max": 4,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "robots_txt": {
+          "score": 5,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "machine_surfaces": {
+          "score": 1,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "ssr": {
+          "score": 2,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "pagespeed": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "schema_ld": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "indexing": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 2,
+          "max": 2,
+          "state": "pass",
+          "evidence_level": "verified"
+        },
+        "wikipedia": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": []
+    },
+    {
+      "name": "Shopify",
+      "category": "Commerce platform",
+      "group": "ecommerce",
+      "size": "enterprise",
+      "url": "https://www.shopify.com",
+      "essentials_checks": {
+        "indexing": {
+          "score": 2,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "schema_ld": {
+          "score": 2,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "robots_txt": {
+          "score": 5,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 1,
+          "max": 2,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "html_structure": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "pagespeed": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "ssr": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "bot_access": {
+          "score": 6,
+          "max": 6,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "llms_txt": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "machine_surfaces": {
+          "score": 3,
+          "max": 3,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "wikipedia": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": []
+    },
+    {
+      "name": "Target",
+      "category": "Major retailer",
+      "group": "ecommerce",
+      "size": "enterprise",
+      "url": "https://www.target.com",
+      "essentials_checks": {
+        "search_discovery": {
+          "score": 2,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 1,
+          "max": 4,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "schema_ld": {
+          "score": 2,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "machine_surfaces": {
+          "score": 0,
+          "max": 3,
+          "state": "warn",
+          "evidence_level": "inferred"
+        },
+        "robots_txt": {
+          "score": 5,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "llms_txt": {
+          "score": 4,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "pagespeed": {
+          "score": 1,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 1,
+          "max": 2,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "ssr": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "bot_access": {
+          "score": 6,
+          "max": 6,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "indexing": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "wikipedia": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": []
+    },
+    {
+      "name": "Allbirds",
+      "category": "Niche DTC product",
+      "group": "ecommerce",
+      "size": "specialty",
+      "url": "https://www.allbirds.com",
+      "essentials_checks": {
+        "schema_ld": {
+          "score": 0,
+          "max": 5,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "robots_txt": {
+          "score": 4,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 1,
+          "max": 4,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "llms_txt": {
+          "score": 4,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "machine_surfaces": {
+          "score": 1,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 1,
+          "max": 2,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "pagespeed": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "ssr": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "bot_access": {
+          "score": 6,
+          "max": 6,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "indexing": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "wikipedia": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": []
+    },
+    {
+      "name": "Huckberry",
+      "category": "Specialty commerce",
+      "group": "ecommerce",
+      "size": "specialty",
+      "url": "https://huckberry.com",
+      "essentials_checks": {
+        "llms_txt": {
+          "score": 0,
+          "max": 5,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "canonical": {
+          "score": 0,
+          "max": 5,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "indexing": {
+          "score": 0,
+          "max": 5,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "robots_txt": {
+          "score": 2,
+          "max": 6,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "search_discovery": {
+          "score": 1,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "bot_access": {
+          "score": 1,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "schema_ld": {
+          "score": 0,
+          "max": 5,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "html_structure": {
+          "score": 0,
+          "max": 4,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "social": {
+          "score": 0,
+          "max": 2,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "machine_surfaces": {
+          "score": 0,
+          "max": 3,
+          "state": "warn",
+          "evidence_level": "inferred"
+        },
+        "pagespeed": {
+          "score": 0,
+          "max": 3,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "ssr": {
+          "score": 0,
+          "max": 4,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "wikipedia": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": []
+    },
+    {
+      "name": "Glossier",
+      "category": "Niche beauty brand",
+      "group": "ecommerce",
+      "size": "specialty",
+      "url": "https://www.glossier.com",
+      "essentials_checks": {
+        "schema_ld": {
+          "score": 0,
+          "max": 5,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 2,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 1,
+          "max": 4,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "robots_txt": {
+          "score": 5,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "llms_txt": {
+          "score": 4,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "machine_surfaces": {
+          "score": 1,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 1,
+          "max": 2,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "pagespeed": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "ssr": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "bot_access": {
+          "score": 6,
+          "max": 6,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "indexing": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "wikipedia": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": [
+        "robots.txt published",
+        "valid sitemap discovery",
+        "llms.txt or Markdown negotiation",
+        "OAuth/OIDC discovery metadata",
+        "OAuth Protected Resource metadata"
+      ]
+    },
+    {
+      "name": "37signals",
+      "category": "Independent software company",
+      "group": "corporate",
+      "size": "boutique",
+      "url": "https://37signals.com",
+      "essentials_checks": {
+        "llms_txt": {
+          "score": 0,
+          "max": 5,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "robots_txt": {
+          "score": 2,
+          "max": 6,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "search_discovery": {
+          "score": 2,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "machine_surfaces": {
+          "score": 1,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 1,
+          "max": 2,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "wikipedia": {
+          "score": 2,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "schema_ld": {
+          "score": 4,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "pagespeed": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "ssr": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "bot_access": {
+          "score": 6,
+          "max": 6,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "indexing": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        }
+      },
+      "agent_passed": []
+    },
+    {
+      "name": "Apple",
+      "category": "Major corporate site",
+      "group": "corporate",
+      "size": "enterprise",
+      "url": "https://www.apple.com",
+      "essentials_checks": {
+        "llms_txt": {
+          "score": 2,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "indexing": {
+          "score": 2,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "robots_txt": {
+          "score": 5,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 2,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 1,
+          "max": 2,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "machine_surfaces": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "pagespeed": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "ssr": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "bot_access": {
+          "score": 6,
+          "max": 6,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "schema_ld": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "wikipedia": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": []
+    },
+    {
+      "name": "Vercel",
+      "category": "Developer platform company",
+      "group": "corporate",
+      "size": "specialty",
+      "url": "https://vercel.com",
+      "essentials_checks": {
+        "llms_txt": {
+          "score": 2,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "machine_surfaces": {
+          "score": 1,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 1,
+          "max": 2,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "ssr": {
+          "score": 2,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "pagespeed": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "robots_txt": {
+          "score": 6,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "bot_access": {
+          "score": 6,
+          "max": 6,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "schema_ld": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "indexing": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "wikipedia": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": [
+        "robots.txt published",
+        "valid sitemap discovery",
+        "Content Signals in robots.txt",
+        "OAuth/OIDC discovery metadata"
+      ]
+    },
+    {
+      "name": "Anthropic",
+      "category": "AI company",
+      "group": "corporate",
+      "size": "specialty",
+      "url": "https://www.anthropic.com",
+      "essentials_checks": {
+        "schema_ld": {
+          "score": 0,
+          "max": 5,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "llms_txt": {
+          "score": 3,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 1,
+          "max": 4,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "machine_surfaces": {
+          "score": 0,
+          "max": 3,
+          "state": "warn",
+          "evidence_level": "inferred"
+        },
+        "robots_txt": {
+          "score": 5,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 1,
+          "max": 2,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "ssr": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "bot_access": {
+          "score": 6,
+          "max": 6,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "pagespeed": {
+          "score": 3,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "indexing": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "wikipedia": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": []
+    },
+    {
+      "name": "Fathom Analytics",
+      "category": "Boutique service software",
+      "group": "services",
+      "size": "boutique",
+      "url": "https://usefathom.com",
+      "essentials_checks": {
+        "robots_txt": {
+          "score": 5,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "llms_txt": {
+          "score": 4,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "machine_surfaces": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "wikipedia": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "bot_access": {
+          "score": 6,
+          "max": 6,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "schema_ld": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "ssr": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        },
+        "pagespeed": {
+          "score": 3,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "indexing": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 2,
+          "max": 2,
+          "state": "pass",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": []
+    },
+    {
+      "name": "Deloitte",
+      "category": "Enterprise services",
+      "group": "services",
+      "size": "enterprise",
+      "url": "https://www.deloitte.com",
+      "essentials_checks": {
+        "llms_txt": {
+          "score": 2,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "schema_ld": {
+          "score": 0,
+          "max": 5,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 2,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "machine_surfaces": {
+          "score": 0,
+          "max": 3,
+          "state": "warn",
+          "evidence_level": "inferred"
+        },
+        "robots_txt": {
+          "score": 5,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "indexing": {
+          "score": 4,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 1,
+          "max": 2,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "pagespeed": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "ssr": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "bot_access": {
+          "score": 6,
+          "max": 6,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "wikipedia": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": []
+    },
+    {
+      "name": "Calendly",
+      "category": "Service software",
+      "group": "services",
+      "size": "specialty",
+      "url": "https://calendly.com",
+      "essentials_checks": {
+        "machine_surfaces": {
+          "score": 0,
+          "max": 3,
+          "state": "warn",
+          "evidence_level": "inferred"
+        },
+        "robots_txt": {
+          "score": 5,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 2,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "pagespeed": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "ssr": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "bot_access": {
+          "score": 6,
+          "max": 6,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "schema_ld": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "llms_txt": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "indexing": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 2,
+          "max": 2,
+          "state": "pass",
+          "evidence_level": "verified"
+        },
+        "wikipedia": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": [
+        "robots.txt published",
+        "valid sitemap discovery",
+        "llms.txt or Markdown negotiation",
+        "AI-specific robots.txt rules",
+        "OAuth/OIDC discovery metadata"
+      ]
+    },
+    {
+      "name": "kottke.org",
+      "category": "Independent blog",
+      "group": "blog",
+      "size": "boutique",
+      "url": "https://kottke.org",
+      "essentials_checks": {
+        "robots_txt": {
+          "score": 5,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 2,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "llms_txt": {
+          "score": 4,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "machine_surfaces": {
+          "score": 1,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "pagespeed": {
+          "score": 1,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 1,
+          "max": 2,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "bot_access": {
+          "score": 6,
+          "max": 6,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "schema_ld": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "ssr": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "indexing": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "wikipedia": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": []
+    },
+    {
+      "name": "Wait But Why",
+      "category": "Long-form blog",
+      "group": "blog",
+      "size": "specialty",
+      "url": "https://waitbutwhy.com",
+      "essentials_checks": {
+        "llms_txt": {
+          "score": 2,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 1,
+          "max": 4,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "robots_txt": {
+          "score": 5,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "machine_surfaces": {
+          "score": 1,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 1,
+          "max": 2,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "ssr": {
+          "score": 2,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "bot_access": {
+          "score": 5,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "pagespeed": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "schema_ld": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "indexing": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "wikipedia": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": [
+        "robots.txt published",
+        "valid sitemap discovery"
+      ]
+    },
+    {
+      "name": "Medium",
+      "category": "Content platform",
+      "group": "blog",
+      "size": "enterprise",
+      "url": "https://medium.com",
+      "essentials_checks": {
+        "canonical": {
+          "score": 0,
+          "max": 5,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "indexing": {
+          "score": 0,
+          "max": 5,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "llms_txt": {
+          "score": 1,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "bot_access": {
+          "score": 1,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "schema_ld": {
+          "score": 0,
+          "max": 5,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "robots_txt": {
+          "score": 4,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 0,
+          "max": 4,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "social": {
+          "score": 0,
+          "max": 2,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "machine_surfaces": {
+          "score": 0,
+          "max": 3,
+          "state": "warn",
+          "evidence_level": "inferred"
+        },
+        "pagespeed": {
+          "score": 0,
+          "max": 3,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "ssr": {
+          "score": 0,
+          "max": 4,
+          "state": "warn",
+          "evidence_level": "unknown"
+        },
+        "search_discovery": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "wikipedia": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": [
+        "robots.txt published",
+        "valid sitemap discovery",
+        "AI-specific robots.txt rules"
+      ]
+    },
+    {
+      "name": "404 Media",
+      "category": "Journalist-owned outlet",
+      "group": "news",
+      "size": "boutique",
+      "url": "https://www.404media.co",
+      "essentials_checks": {
+        "llms_txt": {
+          "score": 3,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 1,
+          "max": 4,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "robots_txt": {
+          "score": 5,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "indexing": {
+          "score": 4,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 1,
+          "max": 2,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "machine_surfaces": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "pagespeed": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "bot_access": {
+          "score": 6,
+          "max": 6,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "schema_ld": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "ssr": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "wikipedia": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": []
+    },
+    {
+      "name": "Ars Technica",
+      "category": "Specialty tech publisher",
+      "group": "news",
+      "size": "specialty",
+      "url": "https://arstechnica.com",
+      "essentials_checks": {
+        "robots_txt": {
+          "score": 3,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "llms_txt": {
+          "score": 2,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 1,
+          "max": 4,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "machine_surfaces": {
+          "score": 1,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 1,
+          "max": 2,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "bot_access": {
+          "score": 5,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "pagespeed": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "schema_ld": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "ssr": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "indexing": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "wikipedia": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": [
+        "robots.txt published",
+        "valid sitemap discovery",
+        "DNS-AID records",
+        "AI-specific robots.txt rules"
+      ]
+    },
+    {
+      "name": "AP News",
+      "category": "Wire service",
+      "group": "news",
+      "size": "enterprise",
+      "url": "https://apnews.com",
+      "essentials_checks": {
+        "robots_txt": {
+          "score": 3,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "bot_access": {
+          "score": 0,
+          "max": 6,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "llms_txt": {
+          "score": 3,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "indexing": {
+          "score": 3,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 1,
+          "max": 4,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "machine_surfaces": {
+          "score": 1,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 1,
+          "max": 2,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "pagespeed": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "ssr": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "wikipedia": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "schema_ld": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        }
+      },
+      "agent_passed": [
+        "robots.txt published",
+        "valid sitemap discovery",
+        "AI-specific robots.txt rules"
+      ]
+    },
+    {
+      "name": "Plausible",
+      "category": "Privacy analytics SaaS",
+      "group": "saas",
+      "size": "boutique",
+      "url": "https://plausible.io",
+      "essentials_checks": {
+        "robots_txt": {
+          "score": 4,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "llms_txt": {
+          "score": 3,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 1,
+          "max": 4,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "machine_surfaces": {
+          "score": 1,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 1,
+          "max": 2,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "pagespeed": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "bot_access": {
+          "score": 6,
+          "max": 6,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "schema_ld": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "ssr": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "indexing": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "wikipedia": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": []
+    },
+    {
+      "name": "Linear",
+      "category": "Project management SaaS",
+      "group": "saas",
+      "size": "specialty",
+      "url": "https://linear.app",
+      "essentials_checks": {
+        "indexing": {
+          "score": 2,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "schema_ld": {
+          "score": 0,
+          "max": 5,
+          "state": "fail",
+          "evidence_level": "inferred"
+        },
+        "robots_txt": {
+          "score": 5,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 2,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "machine_surfaces": {
+          "score": 1,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 1,
+          "max": 2,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "pagespeed": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "ssr": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "wikipedia": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "bot_access": {
+          "score": 6,
+          "max": 6,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "llms_txt": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "canonical": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        }
+      },
+      "agent_passed": []
+    },
+    {
+      "name": "Atlassian",
+      "category": "Collaboration software",
+      "group": "saas",
+      "size": "enterprise",
+      "url": "https://www.atlassian.com",
+      "essentials_checks": {
+        "canonical": {
+          "score": 3,
+          "max": 5,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "robots_txt": {
+          "score": 5,
+          "max": 6,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "machine_surfaces": {
+          "score": 1,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "search_discovery": {
+          "score": 3,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "social": {
+          "score": 1,
+          "max": 2,
+          "state": "partial",
+          "evidence_level": "verified"
+        },
+        "ssr": {
+          "score": 2,
+          "max": 4,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "pagespeed": {
+          "score": 2,
+          "max": 3,
+          "state": "partial",
+          "evidence_level": "inferred"
+        },
+        "bot_access": {
+          "score": 6,
+          "max": 6,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "html_structure": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "schema_ld": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "llms_txt": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "indexing": {
+          "score": 5,
+          "max": 5,
+          "state": "pass",
+          "evidence_level": "inferred"
+        },
+        "wikipedia": {
+          "score": 4,
+          "max": 4,
+          "state": "pass",
+          "evidence_level": "verified"
+        }
+      },
+      "agent_passed": [
+        "robots.txt published",
+        "valid sitemap discovery",
+        "llms.txt or Markdown negotiation"
+      ]
+    }
+  ]
+}

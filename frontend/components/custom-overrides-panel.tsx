@@ -15,9 +15,9 @@ interface Props {
 /**
  * CustomOverridesPanel
  *
- * Power-user toggle panel for the Custom preset. Groups the supported
- * override keys into four categories plus three secondary top-level
- * dimensions. Backend remains the source of truth for validation.
+ * Toggle panel for the Custom preset. Groups the supported override keys
+ * into four categories plus three broader scope add-ons. Backend remains
+ * the source of truth for validation.
  */
 export default function CustomOverridesPanel({ overrides, onChange }: Props) {
   function toggle(key: string, next: boolean) {
@@ -38,27 +38,27 @@ export default function CustomOverridesPanel({ overrides, onChange }: Props) {
   }
 
   return (
-    <section className="custom-overrides-panel" aria-label="Custom preset overrides">
+    <section className="custom-overrides-panel" aria-label="Custom scope toggles">
       <header className="custom-overrides-header">
         <div>
-          <p className="panel-kicker">Power user overrides</p>
-          <h3>Custom / Power User toggles</h3>
+          <p className="panel-kicker">Custom scope</p>
+          <h3>Choose your checks</h3>
           <p className="custom-overrides-subtitle">
-            Defaults mirror Blog/Content.
+            Starts from the Blog/Content baseline. Toggle any check family on or off.
           </p>
         </div>
         <div className="custom-overrides-actions">
           <button type="button" className="secondary-action" onClick={resetToDefaults}>
-            Reset to defaults
+            Reset
           </button>
           <button type="button" className="secondary-action" onClick={disableAll}>
-            Disable all
+            Clear all
           </button>
         </div>
       </header>
 
       <div className="custom-overrides-secondary">
-        <p className="panel-kicker">Secondary dimensions</p>
+        <p className="panel-kicker">Scope add-ons</p>
         <div className="custom-overrides-toggle-row">
           {SECONDARY_DIMENSION_KEYS.map((key) => {
             const label = OVERRIDE_LABELS[key] ?? key;
@@ -99,7 +99,6 @@ export default function CustomOverridesPanel({ overrides, onChange }: Props) {
                       onChange={(event) => toggle(key, event.target.checked)}
                     />
                     <span className="custom-override-name">{label}</span>
-                    <span className="custom-override-key">{key}</span>
                   </label>
                 );
               })}

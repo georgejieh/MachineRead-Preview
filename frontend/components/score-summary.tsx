@@ -58,7 +58,7 @@ interface ScoreRingProps {
 
 function ScoreRing({ score, max }: ScoreRingProps) {
   const percent = Math.round((score / max) * 100);
-  const data = [{ value: percent, fill: "#2f80ed" }];
+  const data = [{ value: percent, fill: "var(--accent)" }];
 
   return (
     <div className="score-ring" aria-label={`Score ${score} out of ${max}`}>
@@ -464,8 +464,8 @@ export default function ScoreSummary({ result }: Props) {
                     name === "percent" ? "Included evidence" : "Gap",
                   ]}
                 />
-                <Bar dataKey="percent" stackId="score" fill="#2f80ed" radius={[6, 0, 0, 6]} />
-                <Bar dataKey="remaining" stackId="score" fill="var(--chart-track)" radius={[0, 6, 6, 0]} />
+                <Bar dataKey="percent" stackId="score" fill="var(--accent)" radius={[2, 0, 0, 2]} />
+                <Bar dataKey="remaining" stackId="score" fill="var(--chart-track)" radius={[0, 2, 2, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

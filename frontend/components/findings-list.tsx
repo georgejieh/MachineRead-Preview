@@ -174,7 +174,7 @@ const SCOPE_SCOPE_LABELS: Record<string, string> = {
 };
 
 function presetLabelForScope(scope: AuditScope): string {
-  return scope.preset_applied ? PRESET_DISPLAY[scope.preset_applied].label : "General website (legacy)";
+  return scope.preset_applied ? PRESET_DISPLAY[scope.preset_applied].label : "General website (classic)";
 }
 
 export default function FindingsList({ checks, scope }: Props) {
@@ -204,12 +204,10 @@ export default function FindingsList({ checks, scope }: Props) {
           <h2>Checked signals and advanced coverage</h2>
         </div>
         <p>
-          Included rows may aggregate verified DuckDuckGo crawler policy with MachineRead-originated
-          user-agent probes, page-owned search-blurb coherence proxies, and local source-response
-          extraction-readiness evidence. This does not verify actual DuckDuckGo or Bing snippet
-          selection or display, provider-authenticated crawler traffic, Firecrawl or provider
-          extraction, browser-rendered output, crawl, map, screenshots, ranking, or extraction
-          fidelity; row-specific actions and caveats remain in each finding.
+          Every result below comes from bounded public checks — crawler policy files, live bot
+          fetches, page markup, and discovery endpoints. Signals we can only infer are labelled as
+          proxies, and checks that need provider data or deeper crawling stay in the Advanced list
+          rather than being guessed at. Each row carries its own caveats.
         </p>
         <button
           className="secondary-action"

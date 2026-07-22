@@ -15,40 +15,9 @@ import type { AuditResult, CheckResult, Preset } from "@/lib/types";
 
 type Theme = "light" | "dark";
 
-const BASE_AGENT_PROBE_MAX = 8;
-// +6 covers the 6 `scope == "protocols"` JSON surfaces in
-// backend/app/agent_readiness._JSON_SURFACES: API Catalog, MCP Server
-// Card, A2A Agent Card, Agent Skills index, WebMCP manifest, ARD static
-// catalog. (Plus the base 8 universal probes and the 3 account-auth / 4
-// commerce surfaces when those scopes are included.)
-const PROTOCOL_AGENT_PROBES = 6;
-const ACCOUNT_AUTH_AGENT_PROBES = 3;
-const COMMERCE_AGENT_PROBES = 4;
-
 function applyTheme(theme: Theme) {
   document.documentElement.dataset.theme = theme;
   document.documentElement.style.colorScheme = theme;
-}
-
-function selectedAgentProbeMax(
-  includeProtocols: boolean,
-  includeAccountAuth: boolean,
-  includeEcommerce: boolean,
-): number {
-  return (
-    BASE_AGENT_PROBE_MAX +
-    (includeProtocols ? PROTOCOL_AGENT_PROBES : 0) +
-    (includeAccountAuth ? ACCOUNT_AUTH_AGENT_PROBES : 0) +
-    (includeEcommerce ? COMMERCE_AGENT_PROBES : 0)
-  );
-}
-
-function benchmarkScopeKey(
-  includeProtocols: boolean,
-  includeAccountAuth: boolean,
-  includeEcommerce: boolean,
-): string {
-  return `p${includeProtocols ? 1 : 0}_a${includeAccountAuth ? 1 : 0}_c${includeEcommerce ? 1 : 0}`;
 }
 
 function legacyScopeLabel(
@@ -69,7 +38,7 @@ function legacyScopeLabel(
 
 /** Pretty label for the selected preset, used in the pre-scan header. */
 function presetLabelFor(preset: Preset | null): string {
-  if (preset === null) return "General website (legacy)";
+  if (preset === null) return "General website (classic)";
   return PRESET_DISPLAY[preset].label;
 }
 
@@ -77,7 +46,7 @@ function DashboardPreview() {
   return (
     <section className="preview-grid" aria-label="Audit preview">
       <div className="preview-panel preview-score">
-        <p className="panel-kicker">Awaiting URL</p>
+        <p className="panel-kicker">Standby</p>
         <div className="preview-ring">
           <span>--</span>
         </div>
@@ -94,21 +63,21 @@ function DashboardPreview() {
         ))}
       </div>
       <div className="preview-panel preview-inventory">
-        <p className="panel-kicker">Essentials scope</p>
+        <p className="panel-kicker">What gets scanned</p>
         <div className="inventory-line">
           <span>Check groups</span>
           <strong>{ESSENTIALS_CHECK_GROUP_COUNT}</strong>
         </div>
         <div className="inventory-line">
-          <span>Checked points</span>
+          <span>Scored points</span>
           <strong>{ESSENTIALS_CHECKED_POINT_MAX}</strong>
         </div>
         <div className="inventory-line">
-          <span>Advanced rows</span>
+          <span>Advanced checks listed</span>
           <strong>{ADVANCED_CHECK_ROW_COUNT}</strong>
         </div>
         <div className="inventory-line">
-          <span>Quota-risk APIs</span>
+          <span>Logins or paid APIs needed</span>
           <strong>0</strong>
         </div>
       </div>
@@ -122,7 +91,7 @@ function LoadingDashboard() {
       <div className="loading-heading">
         <div className="spinner" />
         <div>
-          <p className="panel-kicker">Audit running</p>
+          <p className="panel-kicker">Scan in progress</p>
           <h2>
             Checking crawler policy, bot fetch access, structured data, text access, freshness,
             and search discovery hints.
@@ -164,7 +133,7 @@ export default function AuditClient() {
     preset: "blog",
     customOverrides: {},
   });
-  // Legacy booleans only apply when the user picks "General website (legacy)".
+  // Legacy booleans only apply when the user picks "General website (classic)".
   // They are intentionally NOT synced with preset selection — the backend
   // derives the equivalent dimensions from the chosen preset.
   const [legacyProtocols, setLegacyProtocols] = useState(false);
@@ -191,28 +160,13 @@ export default function AuditClient() {
     [result],
   );
 
-  // The pre-scan panel can only show the legacy boolean-derived label when
-  // no preset has been picked. Once a preset is selected, the panel shows
-  // the preset's own display label and the backend-provided scope label
-  // takes over after the audit completes.
+  // Before a scan runs, the scope chip shows the classic boolean-derived
+  // label (when no preset is selected) or the preset's display label. After
+  // the scan, the backend-resolved scope label takes over.
   const isLegacySelection = selection.preset === null;
   const preScanScopeLabel = isLegacySelection
     ? legacyScopeLabel(legacyProtocols, legacyAccountAuth, legacyEcommerce)
     : presetLabelFor(selection.preset);
-  const agentProbeMax = isLegacySelection
-    ? selectedAgentProbeMax(legacyProtocols, legacyAccountAuth, legacyEcommerce)
-    : selectedAgentProbeMax(
-        result?.scope.include_protocols ?? false,
-        result?.scope.include_account_auth ?? false,
-        result?.scope.include_ecommerce ?? false,
-      );
-  const benchmarkKey = isLegacySelection
-    ? benchmarkScopeKey(legacyProtocols, legacyAccountAuth, legacyEcommerce)
-    : benchmarkScopeKey(
-        result?.scope.include_protocols ?? false,
-        result?.scope.include_account_auth ?? false,
-        result?.scope.include_ecommerce ?? false,
-      );
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -228,9 +182,9 @@ export default function AuditClient() {
 
     try {
       // Legacy path keeps the three booleans verbatim. Preset path passes
-      // the chosen preset and the Power-User overrides through; the
-      // booleans become secondary dimensions on the backend and are
-      // ignored when a preset is provided.
+      // the chosen preset and the Custom overrides through; the booleans
+      // become secondary dimensions on the backend and are ignored when a
+      // preset is provided.
       const includeProtocols = isLegacySelection ? legacyProtocols : false;
       const includeAccountAuth = isLegacySelection ? legacyAccountAuth : false;
       const includeEcommerce = isLegacySelection ? legacyEcommerce : false;
@@ -267,10 +221,10 @@ export default function AuditClient() {
     <div className="app-shell">
       <header className="topbar">
         <div className="brand">
-          <span className="brand-mark">AR</span>
+          <span className="brand-mark">MR</span>
           <div>
             <span className="brand-name">MachineRead</span>
-            <span className="brand-subtitle">Essentials audit dashboard</span>
+            <span className="brand-subtitle">AI &amp; search readiness audit</span>
           </div>
         </div>
         <button
@@ -288,15 +242,18 @@ export default function AuditClient() {
       <section className="command-panel">
         <div className="command-copy">
           <p className="panel-kicker">AI visibility audit</p>
-          <h1>Agent access and search readiness dashboard</h1>
+          <h1>
+            See your site the way <em>machines</em> do.
+          </h1>
           <p>
-            Essentials runs {ESSENTIALS_CHECK_GROUP_COUNT} included check groups across crawler
-            policy, bot access, semantic HTML, structured data, Markdown/text access, freshness,
-            and search discovery. Advanced rows stay visible without being treated as verified.
+            MachineRead probes the public signals that AI agents, retrieval systems, and search
+            crawlers rely on — crawler policy, bot access, semantic HTML, structured data,
+            text/Markdown access, freshness, and discovery hints. {ESSENTIALS_CHECK_GROUP_COUNT}{" "}
+            check groups run on every scan; deeper checks are listed but never guessed at.
           </p>
         </div>
         <form className="audit-form" onSubmit={handleSubmit}>
-          <label htmlFor="audit-url">Website URL</label>
+          <label htmlFor="audit-url">Target URL</label>
           <div className="input-row">
             <input
               ref={urlInputRef}
@@ -307,81 +264,51 @@ export default function AuditClient() {
               required
             />
             <button type="submit" disabled={loading}>
-              {loading ? "Scanning" : "Run audit"}
+              {loading ? "Scanning…" : "Run audit"}
             </button>
           </div>
-          {isLegacySelection && (
-            <div className="scope-control-row" aria-label="Legacy scope booleans">
-              <div className="scope-toggle" aria-label="Audit type">
-                <button
-                  className={!legacyEcommerce ? "active" : ""}
-                  type="button"
-                  onClick={() => setLegacyEcommerce(false)}
-                  aria-pressed={!legacyEcommerce}
-                >
-                  General
-                </button>
-                <button
-                  className={legacyEcommerce ? "active" : ""}
-                  type="button"
-                  onClick={() => setLegacyEcommerce(true)}
-                  aria-pressed={legacyEcommerce}
-                >
-                  Commerce
-                </button>
+          <PresetPicker selection={selection} onChange={setSelection}>
+            {isLegacySelection && (
+              <div className="scope-control-row" aria-label="Classic scan options">
+                <div className="scope-toggle" aria-label="Site type">
+                  <button
+                    className={!legacyEcommerce ? "active" : ""}
+                    type="button"
+                    onClick={() => setLegacyEcommerce(false)}
+                    aria-pressed={!legacyEcommerce}
+                  >
+                    General
+                  </button>
+                  <button
+                    className={legacyEcommerce ? "active" : ""}
+                    type="button"
+                    onClick={() => setLegacyEcommerce(true)}
+                    aria-pressed={legacyEcommerce}
+                  >
+                    Commerce
+                  </button>
+                </div>
+                <div className="capability-toggle" aria-label="Optional surfaces to include">
+                  <button
+                    className={legacyProtocols ? "active" : ""}
+                    type="button"
+                    onClick={() => setLegacyProtocols(!legacyProtocols)}
+                    aria-pressed={legacyProtocols}
+                  >
+                    API/protocol
+                  </button>
+                  <button
+                    className={legacyAccountAuth ? "active" : ""}
+                    type="button"
+                    onClick={() => setLegacyAccountAuth(!legacyAccountAuth)}
+                    aria-pressed={legacyAccountAuth}
+                  >
+                    Account/auth
+                  </button>
+                </div>
               </div>
-              <div className="capability-toggle" aria-label="Relevant optional capabilities">
-                <button
-                  className={legacyProtocols ? "active" : ""}
-                  type="button"
-                  onClick={() => setLegacyProtocols(!legacyProtocols)}
-                  aria-pressed={legacyProtocols}
-                >
-                  API/protocol
-                </button>
-                <button
-                  className={legacyAccountAuth ? "active" : ""}
-                  type="button"
-                  onClick={() => setLegacyAccountAuth(!legacyAccountAuth)}
-                  aria-pressed={legacyAccountAuth}
-                >
-                  Account/auth
-                </button>
-              </div>
-            </div>
-          )}
-          <PresetPicker selection={selection} onChange={setSelection} />
-          <div className="scope-model" aria-label="Pre-scan option model">
-            <div>
-              <span>Eligibility</span>
-              <strong>{result ? result.scope.label : preScanScopeLabel}</strong>
-              <p>
-                {result
-                  ? `Backend resolved scope for preset ${presetLabelFor(result.scope.preset_applied)}.`
-                  : isLegacySelection
-                    ? "Scoped legacy booleans follow the selected General website path."
-                    : `Preset ${presetLabelFor(selection.preset)} ships a fixed scope that the backend will confirm.`}
-              </p>
-            </div>
-            <div>
-              <span>Denominator</span>
-              <strong>
-                {ESSENTIALS_CHECKED_POINT_MAX} pts /{" "}
-                {result ? result.agent_readiness.max : agentProbeMax} agent probes
-              </strong>
-              <p>{ESSENTIALS_CHECK_GROUP_COUNT} Essentials groups stay in scope.</p>
-            </div>
-            <div>
-              <span>Benchmarks</span>
-              <strong>{benchmarkKey}</strong>
-              <p>Peers use the same selected scope before comparison.</p>
-            </div>
-            <div>
-              <span>Caveats</span>
-              <strong>Scoped before scan</strong>
-              <p>Excluded optional surfaces appear as caveats, not silent penalties.</p>
-            </div>
-          </div>
+            )}
+          </PresetPicker>
           <div className="scope-strip" aria-label="Audit scope">
             <span>{result ? result.scope.label : preScanScopeLabel}</span>
             <span>
@@ -391,16 +318,16 @@ export default function AuditClient() {
             </span>
             <span>
               {result
-                ? `${inventory.lockedCount} advanced rows`
-                : `${ADVANCED_CHECK_ROW_COUNT} advanced rows`}
+                ? `${inventory.lockedCount} advanced checks listed`
+                : `${ADVANCED_CHECK_ROW_COUNT} advanced checks listed`}
             </span>
-            <span>
-              {result
-                ? inventory.warningCount
-                  ? `${inventory.warningCount} watch rows`
-                  : `${inventory.needsWorkCount} needs work`
-                : `${selection.preset ? presetLabelFor(selection.preset) : "General website (legacy)"}`}
-            </span>
+            {result && (
+              <span>
+                {inventory.warningCount
+                  ? `${inventory.warningCount} watch items`
+                  : `${inventory.needsWorkCount} need work`}
+              </span>
+            )}
           </div>
         </form>
       </section>

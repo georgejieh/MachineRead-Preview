@@ -39,9 +39,9 @@ export interface PresetDisplayEntry {
  * invents new keys; if a key is missing here, the backend will reject it.
  */
 export const OVERRIDE_LABELS: Record<string, string> = {
-  protocols: "Protocol surfaces (top-level)",
-  account_auth: "Account/auth surfaces (top-level)",
-  ecommerce: "Commerce surfaces (top-level)",
+  protocols: "API & protocol surfaces",
+  account_auth: "Account & auth surfaces",
+  ecommerce: "Commerce surfaces",
   feed_discovery: "Feed discovery (RSS/Atom)",
   article_schema: "Article / BlogPosting schema",
   localbusiness_schema: "LocalBusiness schema",
